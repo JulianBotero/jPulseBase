@@ -10,7 +10,7 @@
  * @affiliation Universidad de los Andes - Centro para la Optimización y Probabilidad Aplicada (COPA)
  * @url http://copa.uniandes.edu.co/
  * 
- * Julian Botero
+ * Julian Botero 201012364
  */
 
 package edu.uniandes.copa.Jpulse;
