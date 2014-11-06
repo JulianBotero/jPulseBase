@@ -11,6 +11,8 @@
  * @url http://copa.uniandes.edu.co/
  * 
  * Julian Botero
+ * 
+ * 
  */
 
 package edu.uniandes.copa.Jpulse;

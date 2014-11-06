@@ -25,6 +25,7 @@ public class VertexPulse {
 	double LabelDist1;
 	double LabelDist2;
 	double LabelDist3;
+
 	// Boolean that tells if the node is visited for first time
 	boolean firstTime = true;
 	// Bounds to reach the end node
@@ -32,7 +33,7 @@ public class VertexPulse {
 	int maxTime;
 	int minTime;
 	int maxDist;
-		
+
 	// SP stuff
 	public static final int infinity = (int)Double.POSITIVE_INFINITY;
 	private EdgePulse reverseEdges;
@@ -43,14 +44,17 @@ public class VertexPulse {
 	private VertexPulse rigthTime;
 	private boolean insertedDist;
 	private boolean insertedTime;
+
 	
 	public VertexPulse(int i) {
 		id = i;
 		insertedDist = false;
 		minDist = infinity;
 		minTime = infinity;
+
 		maxTime = 0;
 		maxDist = 0;
+
 
 		leftDist = this;
 		rigthDist = this;
@@ -83,7 +87,7 @@ public class VertexPulse {
 	public EdgePulse getReversedEdges() {
 		if(reverseEdges!= null){
 			return reverseEdges;
-		}return new EdgePulse(1,1, this,this , -1);
+		}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
 	public void setMinDist(int c){
@@ -92,6 +96,14 @@ public class VertexPulse {
 	
 	public int getMinDist(){
 		return minDist;
+	}
+	
+	public void setMaxDist(int md){
+		maxDist = md;
+	}
+	
+	public int getMaxDist(){
+		return maxDist;
 	}
 	
 	public void setMaxTime(int mt){
@@ -110,15 +122,7 @@ public class VertexPulse {
 		return minTime;
 	}
 	
-	public void setMaxDist(int md){
-		maxDist = md;
-	}
-	
-	public int getMaxDist(){
-		return maxDist;
-	}
-	
-	
+
 	/**
 	 * Unlink a vertex from the bucket
 	 * @return true, if the buckets gets empty
@@ -347,6 +351,7 @@ public class VertexPulse {
 	public int getCompareCriteria(){
 		return getMinDist();
 	}
+
 
 
 }

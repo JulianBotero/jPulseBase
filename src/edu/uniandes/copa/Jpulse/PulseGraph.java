@@ -29,6 +29,7 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 	//SP stuff
 	private int Cd;
 	private int Ct;
+	private int Csd;
 	// Time constraint
 	static double TimeC;
 	// Primal bound
@@ -45,6 +46,7 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		this.numNodes = numNodes;
 		Cd=0;
 		Ct=0;
+		Csd=0;
 		vertexes = new VertexPulse[numNodes];
 		Path= new ArrayList<Integer>();
 		
@@ -63,14 +65,17 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		return vertexes[id];
 	}
 	
-	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex, int d, int t, int id) {
+	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex, int d, int t, int sd, int id) {
 		if(d>Cd){
 			Cd=d;
 		}
 		if(t>Ct){
 			Ct=t;
 		}
-		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t, targetVertex , sourceVertex, id));
+		if(sd>Csd){
+			Csd=sd;
+		}
+		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t, sd, targetVertex , sourceVertex, id));
 		vertexes[sourceVertex.getID()].magicIndex.add(id);
 		return null;
 	}
@@ -212,7 +217,10 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 	{
 		return Ct;
 	}
-	
+	public int getCsd()
+	{
+		return Csd;
+	}
 	public void resetNetwork(){
 		for (int i = 0; i < numNodes ; i++) {
 			vertexes[i].reset();

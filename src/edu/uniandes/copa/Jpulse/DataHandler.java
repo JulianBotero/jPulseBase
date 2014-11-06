@@ -38,6 +38,8 @@ public class DataHandler {
 	static int[] Distance;
 	// The time attribute for any arc i
 	static int[] Time;
+	// The time attribute for any arc i
+	static int[] StDev;
 	// Data structure for storing the graph
 	private PulseGraph Gd;
 	
@@ -51,6 +53,7 @@ public class DataHandler {
 		Arcs = new int[Instance.NumArcs][2];
 		Distance = new int[Instance.NumArcs];
 		Time = new int[Instance.NumArcs];
+		StDev = new int[Instance.NumArcs];
 		Gd = new PulseGraph(NumNodes);
 	}
 
@@ -101,8 +104,9 @@ public class DataHandler {
 				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1);
 				Distance[row - 1] = Integer.parseInt(readed[3]);
 				Time[row - 1] = Integer.parseInt(readed[4]);
+				StDev[row - 1] = Integer.parseInt(readed[5]);
 				// Add edges to the network
-				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),Distance[row - 1], Time[row - 1] , row-1);
+				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),Distance[row - 1], Time[row - 1] ,StDev[row - 1],row-1);
 			}
 
 			col = 0;

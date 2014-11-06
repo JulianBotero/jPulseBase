@@ -1,0 +1,8 @@
+DataFile:Test-Road-NormalDistr.txt
+Number of Arcs:9
+Number of Nodes:6
+Time Constraint:13
+Start Node:1
+End Node:6
+
+// This is the NY network with p=0.1
