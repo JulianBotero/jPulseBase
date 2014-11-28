@@ -26,7 +26,7 @@ public class PulseMain {
 	public static void main(String[] args) throws IOException, InterruptedException {
 
 		// Read a config file with the instance information
-		String ini = "Config.txt";
+		String ini = "Config-Test-NormDistr.txt";
 		Settings Instance;
 		Instance= new Settings(ini);
 		// Read the data file and store the data on a DataHandler		

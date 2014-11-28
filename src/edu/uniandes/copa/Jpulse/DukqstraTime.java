@@ -82,6 +82,8 @@ public class DukqstraTime {
 		VertexPulse vi;
 		int di;
 		int ti;
+		int sdi;
+		
 		int lowIterator = 0;
 		boolean empty;
 		while (Snum < numN) {
@@ -90,6 +92,7 @@ public class DukqstraTime {
 				vi = lowLevelBuckets[lowIterator].getEntrance();
 				di = vi.getMaxDist();
 				ti = vi.getMinTime();
+				sdi= vi.getMinStDev();
 				empty = deleteToLabel(lowIterator);
 				Snum++;
 

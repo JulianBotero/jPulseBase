@@ -18,7 +18,7 @@ public class EdgePulse {
 	
 	private int eDist;
 	private int eTime;
-	private int eStDesv;
+	private int eStDev;
 	
 	
 	private EdgePulse nextE;
@@ -30,7 +30,7 @@ public class EdgePulse {
 		// TODO Auto-generated constructor stub
 		eDist = d;
 		eTime = t;
-		eStDesv= sd;
+		eStDev= sd;
 		this.source = nT;
 		this.target = nH;
 		this.id = nid;
@@ -60,7 +60,7 @@ public class EdgePulse {
 		return eTime;
 	}
 	public int getWeightStDev(){
-		return eStDesv;
+		return eStDev;
 	}
 	public VertexPulse getSource(){
 		return source;

@@ -122,6 +122,10 @@ public class VertexPulse {
 		return minTime;
 	}
 	
+	public int getMinStDev() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	/**
 	 * Unlink a vertex from the bucket
@@ -352,6 +356,7 @@ public class VertexPulse {
 		return getMinDist();
 	}
 
+	
 
 
 }

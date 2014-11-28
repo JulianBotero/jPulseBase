@@ -38,6 +38,7 @@ public class FinalVertexPulse extends VertexPulse {
 	
 	int c=0;
 	int d=0;
+	int sd=0;
 	public FinalVertexPulse(int i) {
 		super(i);
 		id = i;
@@ -74,7 +75,7 @@ public class FinalVertexPulse extends VertexPulse {
 	public EdgePulse getReversedEdges() {
 		if(reverseEdges!= null){
 			return reverseEdges;
-		}return new EdgePulse(1,1, this,this , -1);
+		}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
 	public void setMinDist(int c){
