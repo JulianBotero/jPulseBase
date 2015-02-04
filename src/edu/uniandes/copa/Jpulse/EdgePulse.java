@@ -14,18 +14,30 @@
 
 package edu.uniandes.copa.Jpulse;
 
+import MultipleSP.VertexPulse;
+
 public class EdgePulse {
-	
+	/**
 	private int eDist;
 	private int eTime;
 	private int eStDev;
-	
+	*/
 	
 	private EdgePulse nextE;
 	private int id;
 	private VertexPulse source;
 	private VertexPulse target;
+	private int[] atributes; 
 	
+	public EdgePulse( VertexPulse nT, VertexPulse nH, int nid, int[] atri) {
+		// TODO Auto-generated constructor stub
+		
+		this.source = nT;
+		this.target = nH;
+		this.id = nid;
+		this.atributes = atri;
+	}
+	/**
 	public EdgePulse(int d , int t, int sd,  VertexPulse nT, VertexPulse nH, int nid) {
 		// TODO Auto-generated constructor stub
 		eDist = d;
@@ -35,6 +47,7 @@ public class EdgePulse {
 		this.target = nH;
 		this.id = nid;
 	}
+	*/
 	
 	public void addNextCommonTailEdge(EdgePulse e){
 		if(nextE!= null){

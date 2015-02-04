@@ -30,7 +30,7 @@ public class PulseMain {
 		Settings Instance;
 		Instance= new Settings(ini);
 		// Read the data file and store the data on a DataHandler		
-		DataHandler data = new DataHandler(Instance);
+		DataHandler data = new DataHandler(Instance,3);// 3 = Number of attributes
 		data.ReadDimacs();
 		// Create the network and set the time constraint					 
 		PulseGraph network = data.getGd();

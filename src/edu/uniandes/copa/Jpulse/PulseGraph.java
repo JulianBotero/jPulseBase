@@ -20,7 +20,10 @@ import java.util.Set;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
 
+
 public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
+	// The Attributes
+	private static  int[] C;
 	
 	// The nodes
 	static VertexPulse[] vertexes;
@@ -42,7 +45,7 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 	// Binary indicator to know if visiting a node creates a cycle
 	static int[] Visited = new int[DataHandler.NumNodes];
 	
-	public PulseGraph( int numNodes) {
+	public PulseGraph(int numNodes) {
 		super();
 		this.numNodes = numNodes;
 		Cd=0;
@@ -66,7 +69,19 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		return vertexes[id];
 	}
 	
+	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex,  int[] atris , int id) {
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			if(atris[i]>C[i]){
+				C[i]=atris[i];
+			}
+		}
+	
+		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(targetVertex , sourceVertex, id, atris));
+		vertexes[sourceVertex.getID()].magicIndex.add(id);
+		return null;
+	/**
 	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex, int d, int t, int sd, int id) {
+		
 		if(d>Cd){
 			Cd=d;
 		}
@@ -79,6 +94,8 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t, sd, targetVertex , sourceVertex, id));
 		vertexes[sourceVertex.getID()].magicIndex.add(id);
 		return null;
+		*/
+		
 	}
 	
 	
