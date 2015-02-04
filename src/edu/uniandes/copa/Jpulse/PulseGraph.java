@@ -30,6 +30,7 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 	private int Cd;
 	private int Ct;
 	private int Csd;
+	
 	// Time constraint
 	static double TimeC;
 	// Primal bound

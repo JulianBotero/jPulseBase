@@ -29,6 +29,7 @@ public class Settings {
 	int LastNode;
 	int Source;
 	double TimeC;
+	int seed;
 	
 	public Settings(String ConfigFile) throws IOException{
 		

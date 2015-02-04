@@ -22,38 +22,54 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 public class DataHandler {
+	
+	//Number of labels per node for dominance
+	public static final int numLabels = 3;
+	// Constant that stays the number of attributes per arc
+	public static int num_attributes;
 	// Name of the instance
 	String CvsInput;
 	// Number of arcs
 	int NumArcs;
-	// Number of nodes
-	static int NumNodes;
 	// Destinantion node
 	int LastNode;
 	// Source node
 	int Source;
-	// All the arcs in the network stored in a vector where Arcs[i][0]= Tail for arc i and Arcs[i][1]= Head for arc i 
+	// Number of nodes
+	static int NumNodes;
+		// All the arcs in the network stored in a vector where Arcs[i][0]= Tail for arc i and Arcs[i][1]= Head for arc i 
 	static int[][] Arcs;
-	// The distance attribute for any arc i
-	static int[] Distance;
-	// The time attribute for any arc i
-	static int[] Time;
-	// The time attribute for any arc i
-	static int[] StDev;
+	
+	//Attributes for each arc
+	static int[][] atributes;
 	// Data structure for storing the graph
 	private PulseGraph Gd;
 	
+	//static Random r = new Random(0);
+	//private int seed;
+	
+	// The distance attribute for any arc i
+	//static int[] Distance;
+	// The time attribute for any arc i
+	//static int[] Time;
+	// The time attribute for any arc i
+	//static int[] StDev;
+	
+	
 	// Read data from an instance
-	public DataHandler(Settings Instance) {
+	public DataHandler(Settings Instance, int n_attributess) {
+		num_attributes = n_attributess;
 		CvsInput = Instance.DataFile;
 		NumArcs = Instance.NumArcs;
 		NumNodes = Instance.NumNodes;
 		LastNode = Instance.LastNode;
 		Source = Instance.Source;
+		//seed = Instance.seed;//System.out.println(seed+"sedd");
 		Arcs = new int[Instance.NumArcs][2];
-		Distance = new int[Instance.NumArcs];
-		Time = new int[Instance.NumArcs];
-		StDev = new int[Instance.NumArcs];
+		atributes = new int[Instance.NumArcs][num_attributes];
+		//Distance = new int[Instance.NumArcs];
+		//Time = new int[Instance.NumArcs];
+		//StDev = new int[Instance.NumArcs];
 		Gd = new PulseGraph(NumNodes);
 	}
 
@@ -79,6 +95,8 @@ public class DataHandler {
 
 	// This procedure reads data from a data file in DIMACS format
 	public void ReadDimacs() throws NumberFormatException, IOException {
+		//Random weithgen = new Random(seed);
+		
 		File file = new File(CvsInput);
 
 		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
@@ -100,13 +118,23 @@ public class DataHandler {
 			}
 
 			if (row >= 1) {
-				Arcs[row - 1][0] = (Integer.parseInt(readed[1]) - 1);
-				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1);
-				Distance[row - 1] = Integer.parseInt(readed[3]);
-				Time[row - 1] = Integer.parseInt(readed[4]);
-				StDev[row - 1] = Integer.parseInt(readed[5]);
+				Arcs[row - 1][0] = (Integer.parseInt(readed[1]) - 1); // readed[0]
+				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1); // readed[1]
+				
+				int[] atris = new int[num_attributes];
+				for (int i = 1; i < num_attributes; i++) { //int i = 0
+					atris[i] = Integer.parseInt(readed[2 + i]);
+					atributes[row - 1][i] = atris[i];
+				}
+				//Distance[row - 1] = Integer.parseInt(readed[3]);
+				//Time[row - 1] = Integer.parseInt(readed[4]);
+				//StDev[row - 1] = Integer.parseInt(readed[5]);
+				
 				// Add edges to the network
-				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),Distance[row - 1], Time[row - 1] ,StDev[row - 1],row-1);
+				/**
+				 * Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),Distance[row - 1], Time[row - 1] ,StDev[row - 1],row-1);
+				*/
+				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),atris , row-1);
 			}
 
 			col = 0;
