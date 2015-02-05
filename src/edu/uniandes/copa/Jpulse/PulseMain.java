@@ -84,7 +84,7 @@ public class PulseMain {
 		// Create an empty path
 		ArrayList<Integer> Path = new ArrayList<Integer>();
 		// Pulse the origin node
-		network.getVertexByID(Instance.Source - 1).pulse(0, 0,0, Path);
+		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0, Path);
 		// Report the results
 		System.out.println("EXECUTION TIME: " + (System.nanoTime() - Atime)
 				/ 1000000000);

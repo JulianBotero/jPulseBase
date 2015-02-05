@@ -15,6 +15,10 @@
 package edu.uniandes.copa.Jpulse;
 import java.util.ArrayList;
 
+import umontreal.iro.lecuyer.probdist.NormalDist;
+import umontreal.iro.lecuyer.probdist.NormalDistQuick;
+
+
 public class VertexPulse {
 		
 	// SP stuff
@@ -137,6 +141,9 @@ public class VertexPulse {
 		//}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
+	public double getMinSP(int c){
+		return spMatrix[c][c];
+	}
 	/*
 	public void setMinDist(int c){
 		minDist = c;
@@ -303,7 +310,7 @@ public class VertexPulse {
 	
 	
 	// This is the pulse procedure
-	public void pulse(int PTime, int PDist, int PStDev, ArrayList<Integer> path) 
+	public void pulse(int PTime, int PDist, double PStDev, ArrayList<Integer> path) 
 	{
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
@@ -329,18 +336,22 @@ public class VertexPulse {
 			// Pulse all the head nodes for the outgoing arcs
 			for (int i = 0; i < magicIndex.size(); i++) {
 				// Update distance and time
-				int NewTime = 0;
+				int NewMean = 0;
 				int NewDist = 0;
-				int NewStDev = 0;
-				NewTime = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
+				double NewStDev = 0;
+				double NewTTB = 0;
+				NewMean = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
 				NewDist = (PDist + DataHandler.atributes[magicIndex.get(i)][0]);
-				NewStDev = (Math.pow(PStDev, 2) + DataHandler.atributes[magicIndex.get(i)][2]);
+				NewStDev = Math.sqrt(Math.pow(PStDev, 2) + Math.pow(DataHandler.atributes[magicIndex.get(i)][2],2));
+				//TODO REVISAR Alfa
+				NewTTB = NormalDistQuick.inverseF(NewMean,NewStDev,0.9);
 				// Pruning strategies: infeasibility, bounds and labels
-				if (NewTime <= (PulseGraph.TimeC - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinTime()) &&
-					NewDist <= (PulseGraph.PrimalBound - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinDist()) && 
-					!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].CheckLabels(NewTime, NewDist)){
+				if (NewTTB <= (PulseGraph.TimeC - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(1)) &&
+					NewDist <= (PulseGraph.PrimalBound - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(0)) //&& 
+					//!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].CheckLabels(NewTTB, NewDist, NewStDev)
+					){
 					// If not pruned the pulse travels to the next head node
-					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].pulse(NewTime, NewDist, path);
+					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].pulse(NewMean, NewDist, NewStDev, path);
 				}
 			}
 			// Updates path and visit indicator for backtrack
@@ -401,7 +412,7 @@ public class VertexPulse {
 	*/
 	
 	
-	private void changeLabels(int PTime, int PDist, int PStDev) {
+	private void changeLabels(int PTime, int PDist, double PStDev) {
 		/**
 		// Stores the best distance
 		if (PDist <= LabelDist1) {
