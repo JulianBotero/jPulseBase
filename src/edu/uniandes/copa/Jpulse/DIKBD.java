@@ -380,7 +380,8 @@ public class DIKBD {
 
 		
 	public void resetBucketMap(int source){
-		C= G.getCt();
+		// TODO revisar
+		C= G.getC(1);
 		double x = (int)(Math.log(Math.sqrt(C))/Math.log(2))+0.0;
 		Delta = (int)(Math.pow(2,x));
 		Snum = 0;

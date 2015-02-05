@@ -20,87 +20,86 @@ import java.util.Set;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
 
+public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
+	// Attributes
+	private static int[] C;
 
-public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
-	// The Attributes
-	private static  int[] C;
-	
 	// The nodes
 	static VertexPulse[] vertexes;
 	// Number of nodes
 	private int numNodes;
-	//SP stuff
-	private int Cd;
-	private int Ct;
-	private int Csd;
-	
+	/**
+	 * // SP stuff private int Cd; private int Ct; private int Csd;
+	 */
 	// Time constraint
 	static double TimeC;
 	// Primal bound
 	static double PrimalBound;
-	// The best solution found is globally stored here 
+	// The best solution found is globally stored here
 	static ArrayList<Integer> Path;
-	// The time for the best solution found (the distance is stored in the primal bound)
+	// The time for the best solution found (the distance is stored in the
+	// primal bound)
 	static double TimeStar;
 	// Binary indicator to know if visiting a node creates a cycle
 	static int[] Visited = new int[DataHandler.NumNodes];
-	
+
 	public PulseGraph(int numNodes) {
 		super();
 		this.numNodes = numNodes;
-		Cd=0;
-		Ct=0;
-		Csd=0;
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			C[i] = 0;
+		}
+		/**
+		 * Cd = 0; 
+		 * Ct = 0; 
+		 * Csd = 0;
+		 */
 		vertexes = new VertexPulse[numNodes];
-		Path= new ArrayList<Integer>();
-		
+		Path = new ArrayList<Integer>();
+
 	}
+
 	@Override
 	public EdgePulse addEdge(VertexPulse sourceVertex, VertexPulse targetVertex) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public  int getNumNodes()
-	{
+
+	public int getNumNodes() {
 		return numNodes;
 	}
-	public VertexPulse getVertexByID(int id){
+
+	public VertexPulse getVertexByID(int id) {
 		return vertexes[id];
 	}
-	
-	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex,  int[] atris , int id) {
+
+	public EdgePulse addWeightedEdge(VertexPulse sourceVertex,
+			VertexPulse targetVertex, int[] atris, int id) {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
-			if(atris[i]>C[i]){
-				C[i]=atris[i];
+			if (atris[i] > C[i]) {
+				C[i] = atris[i];
 			}
 		}
-	
-		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(targetVertex , sourceVertex, id, atris));
+
+		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(
+				targetVertex, sourceVertex, id, atris));
 		vertexes[sourceVertex.getID()].magicIndex.add(id);
 		return null;
-	/**
-	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex, int d, int t, int sd, int id) {
-		
-		if(d>Cd){
-			Cd=d;
-		}
-		if(t>Ct){
-			Ct=t;
-		}
-		if(sd>Csd){
-			Csd=sd;
-		}
-		vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t, sd, targetVertex , sourceVertex, id));
-		vertexes[sourceVertex.getID()].magicIndex.add(id);
-		return null;
-		*/
-		
+		/**
+		 * public EdgePulse addWeightedEdge(VertexPulse sourceVertex,
+		 * VertexPulse targetVertex, int d, int t, int sd, int id) {
+		 * 
+		 * if(d>Cd){ Cd=d; } if(t>Ct){ Ct=t; } if(sd>Csd){ Csd=sd; }
+		 * vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t,
+		 * sd, targetVertex , sourceVertex, id));
+		 * vertexes[sourceVertex.getID()].magicIndex.add(id); return null;
+		 */
+
 	}
-	
-	
+
 	@Override
-	public boolean addEdge(VertexPulse sourceVertex, VertexPulse targetVertex, EdgePulse e) {
+	public boolean addEdge(VertexPulse sourceVertex, VertexPulse targetVertex,
+			EdgePulse e) {
 		return false;
 	}
 
@@ -109,6 +108,7 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		vertexes[v.getID()] = v;
 		return true;
 	}
+
 	public boolean addFinalVertex(FinalVertexPulse v) {
 		vertexes[v.getID()] = v;
 		return true;
@@ -225,43 +225,41 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	public int getCd()
-	{
-		return Cd;
-	}
-	public int getCt()
-	{
-		return Ct;
-	}
-	public int getCsd()
-	{
-		return Csd;
-	}
-	
+
 	public int getC(int obj) {
 		return C[obj];
 	}
-	
-	public void resetNetwork(){
-		for (int i = 0; i < numNodes ; i++) {
+	/**
+	 * public int getCd() {
+		return C[0];
+	}
+
+	public int getCt() {
+		return C[1];
+	}
+
+	public int getCsd() {
+		return C[2];
+	}
+	 */
+	 
+
+	public void resetNetwork() {
+		for (int i = 0; i < numNodes; i++) {
 			vertexes[i].reset();
 		}
 	}
-	
-	public void SetConstraint(double timeC) {
-		
-		this.TimeC=timeC;
-		
-	}
-	public void setPrimalBound(int bound) {
-		
-		this.PrimalBound=bound;
-		
-	}
-	
-	
 
+	public void SetConstraint(double timeC) {
+
+		this.TimeC = timeC;
+
+	}
+
+	public void setPrimalBound(int bound) {
+
+		this.PrimalBound = bound;
+
+	}
 
 }

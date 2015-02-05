@@ -37,7 +37,7 @@ public class DataHandler {
 	int Source;
 	// Number of nodes
 	static int NumNodes;
-		// All the arcs in the network stored in a vector where Arcs[i][0]= Tail for arc i and Arcs[i][1]= Head for arc i 
+	// All the arcs in the network stored in a vector where Arcs[i][0]= Tail for arc i and Arcs[i][1]= Head for arc i 
 	static int[][] Arcs;
 	
 	//Attributes for each arc
@@ -72,7 +72,6 @@ public class DataHandler {
 		//StDev = new int[Instance.NumArcs];
 		Gd = new PulseGraph(NumNodes);
 	}
-
 		
 // This procedure creates the nodes for the graph
 	public void upLoadNodes(){
@@ -118,8 +117,8 @@ public class DataHandler {
 			}
 
 			if (row >= 1) {
-				Arcs[row - 1][0] = (Integer.parseInt(readed[1]) - 1); // readed[0]
-				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1); // readed[1]
+				Arcs[row - 1][0] = (Integer.parseInt(readed[1]) - 1); 
+				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1); 
 				
 				int[] atris = new int[num_attributes];
 				for (int i = 1; i < num_attributes; i++) { //int i = 0

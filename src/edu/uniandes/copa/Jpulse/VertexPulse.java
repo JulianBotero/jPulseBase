@@ -301,21 +301,25 @@ public class VertexPulse {
 	}
 	*/
 	
-	/**
+	
 	// This is the pulse procedure
-	public void pulse(int PTime, int PDist, ArrayList<Integer> path) 
+	public void pulse(int PTime, int PDist, int PStDev, ArrayList<Integer> path) 
 	{
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
 			this.firstTime = false;
 			this.Sort(this.magicIndex);
+			left[0] = null;
+			rigth[0] = null;
+			/**
 			leftDist = null;
 			rigthDist = null;
+			*/
 			reverseEdges = null;
 		}
 		
 		// Label update
-		changeLabels(PTime, PDist);
+		changeLabels(PTime, PDist, PStDev);
 		// Check for cycles
 		if (PulseGraph.Visited[id]==0) {
 			// Add the node to the path
@@ -327,8 +331,10 @@ public class VertexPulse {
 				// Update distance and time
 				int NewTime = 0;
 				int NewDist = 0;
-				NewTime = (PTime + DataHandler.Time[magicIndex.get(i)]);
-				NewDist = (PDist + DataHandler.Distance[magicIndex.get(i)]);
+				int NewStDev = 0;
+				NewTime = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
+				NewDist = (PDist + DataHandler.atributes[magicIndex.get(i)][0]);
+				NewStDev = (Math.pow(PStDev, 2) + DataHandler.atributes[magicIndex.get(i)][2]);
 				// Pruning strategies: infeasibility, bounds and labels
 				if (NewTime <= (PulseGraph.TimeC - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinTime()) &&
 					NewDist <= (PulseGraph.PrimalBound - PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinDist()) && 
@@ -342,7 +348,7 @@ public class VertexPulse {
 			PulseGraph.Visited[id]=0;
 		}
 	}
-	 */
+	
 	
 	private void Sort(ArrayList<Integer> set) 
 	{
@@ -394,8 +400,9 @@ public class VertexPulse {
 	}
 	*/
 	
-	/**
-	private void changeLabels(int PTime, int PDist) {
+	
+	private void changeLabels(int PTime, int PDist, int PStDev) {
+		/**
 		// Stores the best distance
 		if (PDist <= LabelDist1) {
 			LabelTime1 = PTime;
@@ -409,8 +416,9 @@ public class VertexPulse {
 			LabelTime3 = PTime;
 			LabelDist3 = PDist;
 		}
+		*/
 	}
-	*/
+	
 	
 	public int getCompareCriteria() {
 		int suma = 0;
