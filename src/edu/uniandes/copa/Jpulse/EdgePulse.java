@@ -63,7 +63,7 @@ public class EdgePulse {
 	public void setNextE(EdgePulse e ){
 		nextE = e;
 	}
-	public double getWeight(int obj){
+	public int getWeight(int obj){
 		return atributes[obj];
 	}
 	/**

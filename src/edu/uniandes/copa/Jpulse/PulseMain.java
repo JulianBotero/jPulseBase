@@ -51,7 +51,7 @@ public class PulseMain {
 		 * tTime.start(); tDist.join(); tTime.join();
 		 */
 		 // MD is the distance for the best time path 
-		double MD=network.getVertexByID(Instance.Source-1).getMaxDistSP(); 
+		int MD=network.getVertexByID(Instance.Source-1).getMaxDistSP(); 
 		 // Set the first primal bound 
 		 network.setPrimalBound(MD);
 		 
