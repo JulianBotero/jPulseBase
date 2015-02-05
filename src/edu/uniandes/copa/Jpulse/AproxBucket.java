@@ -15,8 +15,6 @@
 
 package edu.uniandes.copa.Jpulse;
 
-
-
 public class AproxBucket {
 	
 	private AproxBucket down;
@@ -39,33 +37,37 @@ public class AproxBucket {
 	private int lower;
 	
 	/**
+	 * objective which is beeing optmized
+	 */
+	private int obj;
+	/**
 	 * Create an instance of an aproximate bucket. If a bucket
 	 * is opened, a new vertex is being added
 	 * @param v
 	 */
-	public AproxBucket(VertexPulse v, int nKey, int delta){
+	public AproxBucket(VertexPulse v, int nKey, int obje, int delta){
 		down = null;
 		up = null;
 		entrance = v;
 		key = nKey;
 		lower = key*delta;
 		upper = (key+1)*delta-1;
+		obj = obje;
 	}
-	
 	
 	/**
 	 * Insert a vertex in the bucket.
 	 * @param v Vertex being inserted
 	 */
-	public void insertVertexDist(VertexPulse v){
-		//System.out.println("Entrando "+ v.getID() + " FO : " + v.getMinCost() );
-		entrance.insertVertexDist(v);
+	public void insertVertex(VertexPulse v){
+		//entrance.insertVertex(obj , v);
+		
+		v.left[obj] = entrance.left[obj];
+		v.rigth[obj]  = entrance;
+		entrance.left[obj].rigth[obj] = v;
+		entrance.left[obj] = v;
 	}
-	public void insertVertexTime(VertexPulse v){
-		//System.out.println("Entrando "+ v.getID() + " FO : " + v.getMinCost() );
-		entrance.insertVertexTime(v);
-	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -78,30 +80,35 @@ public class AproxBucket {
 		return null;
 	}
 	 
-	public void deleteToPassDist(VertexPulse v){
-		entrance = entrance.getBRigthDist();
-		v.fastUnlinkDist();
+	public void deleteToPass(VertexPulse v){
+		entrance = entrance.rigth[obj];
+		v.left[obj] = v;
+		v.rigth[obj] = v;
 	}
 	
-	public void deleteToPassTime(VertexPulse v){
-		entrance = entrance.getBRigthTime();
-		v.fastUnlinkTime();
-	}
-
 	
-	public boolean deleteToMoveDist(VertexPulse v){
+	public boolean deleteToMove(VertexPulse v){
 		if(entrance.getID() == v.getID()){
-			entrance = entrance.getBRigthDist();
+			entrance = entrance.rigth[obj];
 		}
-		return v.unLinkVertexDist();
+		
+		if (v.rigth[obj].getID() == v.id) {
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			return true;
+		} else {
+			v.left[obj].rigth[obj] =v.rigth[obj];
+			v.rigth[obj].left[obj] = v.left[obj];
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			return  false;
+		}
+		
+		
+		//return v.unLinkVertex(obj);
 	}
 	
-	public boolean deleteToMoveTime(VertexPulse v){
-		if(entrance.getID() == v.getID()){
-			entrance = entrance.getBRigthTime();
-		}
-		return v.unLinkVertexTime();
-	}
+	
 
 	
 	public AproxBucket deleteBucketToEmpty(){
@@ -162,9 +169,7 @@ public class AproxBucket {
 		down = v;
 	}
 	public void turnTheBucket(){
-		entrance= entrance.getBRigthDist();
+		entrance= entrance.rigth[obj];
 	}
-	public void turnTheBucketTime(){
-		entrance= entrance.getBRigthTime();
-	}
+	
 }

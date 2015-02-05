@@ -19,8 +19,6 @@ package edu.uniandes.copa.Jpulse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-
 public class PulseMain {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -66,9 +64,5 @@ public class PulseMain {
 		System.out.println("Time: "+network.TimeStar);
 		System.out.println("Optimal path: "+network.Path);
 		
-		
-			
-			
-	
 	}
 }

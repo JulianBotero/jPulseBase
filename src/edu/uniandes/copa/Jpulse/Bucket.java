@@ -14,18 +14,25 @@
 
 package edu.uniandes.copa.Jpulse;
 
-
-
 public class Bucket {
 	
 	private VertexPulse entrance;
 	private int key;
-	
+	private int obj;
 	/**
 	 * Create an instance of a bucket. If a bucket
 	 * is opened, a new vertex is being added
 	 * @param v
 	 */
+	public Bucket(VertexPulse v, int nKey, int obje){
+		entrance = v;
+		key = nKey;
+		obj = obje;
+	}
+	public Bucket(int nKey, int obje){
+		key = nKey;
+		obj = obje;
+	}
 	public Bucket(VertexPulse v, int nKey){
 		entrance = v;
 		key = nKey;
@@ -40,41 +47,70 @@ public class Bucket {
 	 * Insert a vertex in the bucket.
 	 * @param v Vertex being inserted
 	 */
-	public void insertVertexDist(VertexPulse v){
+	public void insertVertex(VertexPulse v){
 		if(entrance!=null){
-			entrance.insertVertexDist(v);
+			//entrance.insertVertex(obj, v);
+			
+			v.left[obj] = entrance.left[obj];
+			v.rigth[obj]  = entrance;
+			entrance.left[obj].rigth[obj] = v;
+			entrance.left[obj] = v;
 		}else{
 			entrance = v;
 		}
 	}
-	public void insertVertexTime(VertexPulse v){
-		if(entrance!=null){
-			entrance.insertVertexTime(v);
-		}else{
-			entrance = v;
-		}
-	}
-	
 	
 	/**
-	 * 
-	 * @param v
-	 * @return
+	 * This methods remove from the bucket a node which is 
+	 * been labeling. This method also unlink the node from every body else
+	 * @return true if the bucket gets empty, false otherwise
 	 */
-	public boolean deleteLabeledVertexDist(){
+	public boolean deleteLabeledVertex(){
 		//Delete entrance / FIFO policy 
-		entrance = entrance.getBRigthDist();
-		boolean emp = entrance.getBLeftDist().unLinkVertexDist();
+		entrance = entrance.rigth[obj];
+		boolean emp = false;
+		VertexPulse v = entrance.left[obj];
+		
+		//entrance.left[obj].unLinkVertex(obj);
+		if (v.rigth[obj].getID() == v.id) {
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			emp =  true;
+		} else {
+			v.left[obj].rigth[obj] =v.rigth[obj];
+			v.rigth[obj].left[obj] = v.left[obj];
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			emp =   false;
+		}
+		
+		
 		if(emp){
 			entrance = null;
 			return true;
 		}
 		return false;
 	}
-	public boolean deleteLabeledVertexTime(){
-		//Delete entrance / FIFO policy 
-		entrance = entrance.getBRigthTime();
-		boolean emp = entrance.getBLeftTime().unLinkVertexTime();
+	
+	
+	
+	public boolean deleteToMove(VertexPulse v){
+		if(entrance.getID() == v.getID()){
+			entrance = entrance.rigth[obj];
+		}
+		boolean emp;
+		if (v.rigth[obj].getID() == v.id) {
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			emp =  true;
+		} else {
+			v.left[obj].rigth[obj] =v.rigth[obj];
+			v.rigth[obj].left[obj] = v.left[obj];
+			v.left[obj] = v;
+			v.rigth[obj] = v;
+			emp =  false;
+		}
+		
 		if(emp){
 			entrance = null;
 			return true;
@@ -82,28 +118,6 @@ public class Bucket {
 		return false;
 	}
 	
-	
-	
-	public boolean deleteToMoveDist(VertexPulse v){
-		if(entrance.getID() == v.getID()){
-			entrance = entrance.getBRigthDist();
-		}
-		if(v.unLinkVertexDist()){
-			entrance = null;
-			return true;
-		}
-		return false;
-	}
-	public boolean deleteToMoveTime(VertexPulse v){
-		if(entrance.getID() == v.getID()){
-			entrance = entrance.getBRigthTime();
-		}
-		if(v.unLinkVertexTime()){
-			entrance = null;
-			return true;
-		}
-		return false;
-	}
 	
 	public int getKey(){
 		return key;

@@ -239,6 +239,11 @@ public class PulseGraph  implements Graph<VertexPulse, EdgePulse> {
 	{
 		return Csd;
 	}
+	
+	public int getC(int obj) {
+		return C[obj];
+	}
+	
 	public void resetNetwork(){
 		for (int i = 0; i < numNodes ; i++) {
 			vertexes[i].reset();

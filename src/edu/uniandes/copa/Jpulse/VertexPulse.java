@@ -16,10 +16,7 @@ package edu.uniandes.copa.Jpulse;
 import java.util.ArrayList;
 
 public class VertexPulse {
-	
-	
-	
-	
+		
 	// SP stuff
 	public static final int infinity = (int)Double.POSITIVE_INFINITY;
 	private EdgePulse reverseEdges;
@@ -27,7 +24,7 @@ public class VertexPulse {
 	// This array contains the indexes for all the outgoing arcs from this node
 	ArrayList<Integer> magicIndex;
 	
-	private int id;
+	public int id;
 	
 	public VertexPulse[] left;
 	public VertexPulse[] rigth;
