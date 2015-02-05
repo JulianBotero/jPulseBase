@@ -102,7 +102,7 @@ public class DataHandler {
 		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
 		String line = null;
 
-		String[] readed = new String[5];
+		String[] readed = new String[6];
 
 		int row = 0;
 		int col = 0;
@@ -131,10 +131,10 @@ public class DataHandler {
 				//StDev[row - 1] = Integer.parseInt(readed[5]);
 				
 				// Add edges to the network
+				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]), atris, row-1);
 				/**
 				 * Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]),Distance[row - 1], Time[row - 1] ,StDev[row - 1],row-1);
 				*/
-				Gd.addWeightedEdge( Gd.getVertexByID(Arcs[row - 1][0]), Gd.getVertexByID(Arcs[row - 1][1]), atris, row-1);
 			}
 
 			col = 0;

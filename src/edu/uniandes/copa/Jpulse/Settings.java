@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 public class Settings {
@@ -28,8 +30,15 @@ public class Settings {
 	int NumNodes;
 	int LastNode;
 	int Source;
+	int numObjs;
+	
 	double TimeC;
-	int seed;
+	double Alfa;
+	//int seed;
+	
+	ArrayList<Integer> LastNodeS = new ArrayList<Integer>();
+	ArrayList<Integer> SourceS=new ArrayList<Integer>();
+
 	
 	public Settings(String ConfigFile) throws IOException{
 		
@@ -45,7 +54,7 @@ public class Settings {
 	 
 		//read each line of text file
 		while((line = bufRdr.readLine()) != null && row < 6)
-		{	
+		{
 		StringTokenizer st = new StringTokenizer(line,":");
 		while (st.hasMoreTokens())
 		{
@@ -62,13 +71,33 @@ public class Settings {
 		DataFile=readed[0][1];
 		NumArcs=Integer.parseInt(readed[1][1]);
 		NumNodes=Integer.parseInt(readed[2][1]);
-		TimeC=Double.parseDouble(readed[3][1]);
-		Source=Integer.parseInt(readed[4][1]);
-		LastNode=Integer.parseInt(readed[5][1]);		 
+		Source=Integer.parseInt(readed[3][1]);
+		LastNode=Integer.parseInt(readed[4][1]);	 
+		numObjs=Integer.parseInt(readed[5][1]);
 		
-		
-		
+		/**
+		TimeC=Double.parseDouble(readed[6][1]);
+		Alfa=Double.parseDouble(readed[7][1]);
+		*/
 	}
-	
+	public int getNumberOfInstances() {
+		if (Source==-1 && LastNode==-1) {
+			int top  =  3 ; 
+			Random r1 = new Random(0);
+			int nodes  = NumNodes;
+			for (int i = 0; i <top; i++) {
+				SourceS.add(1+ r1.nextInt(nodes)); 
+				LastNodeS.add(1+ r1.nextInt(nodes)); 
+			}
+			System.out.println();
+			System.out.println("sources:"+ SourceS);
+			System.out.println("sinks:" + LastNodeS);
+			
+			return top;
+		}
+		else{
+			return 1;
+		}
+	}
 	
 }
