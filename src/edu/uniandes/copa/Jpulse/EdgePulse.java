@@ -14,8 +14,6 @@
 
 package edu.uniandes.copa.Jpulse;
 
-import MultipleSP.VertexPulse;
-
 public class EdgePulse {
 	/**
 	private int eDist;
@@ -29,8 +27,7 @@ public class EdgePulse {
 	private VertexPulse target;
 	private int[] atributes; 
 	
-	public EdgePulse( VertexPulse nT, VertexPulse nH, int nid, int[] atri) {
-		// TODO Auto-generated constructor stub
+	public EdgePulse(VertexPulse nT, VertexPulse nH, int nid, int[] atri) {
 		
 		this.source = nT;
 		this.target = nH;
@@ -66,6 +63,10 @@ public class EdgePulse {
 	public void setNextE(EdgePulse e ){
 		nextE = e;
 	}
+	public int getWeight(int obj){
+		return atributes[obj];
+	}
+	/**
 	public int getWeightDist(){
 		return eDist;
 	}
@@ -75,6 +76,7 @@ public class EdgePulse {
 	public int getWeightStDev(){
 		return eStDev;
 	}
+	*/
 	public VertexPulse getSource(){
 		return source;
 	}
@@ -86,12 +88,13 @@ public class EdgePulse {
 	{
 		return id;
 	}
-	public EdgePulse findEdgebyTarget( VertexPulse targetT)
+	public EdgePulse findEdgebyTarget(VertexPulse targetT)
 	{
 		if(targetT.getID() == this.target.getID())
 		{
 			return this;
-		}else{
+		}
+		else{
 			if(nextE!= null)
 			{
 				return nextE.findEdgebyTarget(targetT);
@@ -100,10 +103,17 @@ public class EdgePulse {
 		return null;
 	}
 	
-	
+	public int getCompareCriteria(){
+		int suma = 0;
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			suma += target.spMatrix[i][i];
+		}
+		return suma;
+	}
+	/**
 	public int getCompareCriteria(){
 		return target.getMinDist() + target.getMinTime();
 	}
-
+	*/
 	
 }

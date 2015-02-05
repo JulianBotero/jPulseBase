@@ -16,8 +16,41 @@ package edu.uniandes.copa.Jpulse;
 import java.util.ArrayList;
 
 public class VertexPulse {
+	
+	
+	
+	
+	// SP stuff
+	public static final int infinity = (int)Double.POSITIVE_INFINITY;
+	private EdgePulse reverseEdges;
+	
 	// This array contains the indexes for all the outgoing arcs from this node
 	ArrayList<Integer> magicIndex;
+	
+	private int id;
+	
+	public VertexPulse[] left;
+	public VertexPulse[] rigth;
+
+	/**
+	 * This matrix contains the sp bounds for each node. spMatrix(i,i) correspond to the
+	 * sp from the end node to this node of the objective i. M_ij correspond to
+	 * the objective consumptions of the objective j when the objective i is
+	 * minimum. 
+	 */
+	public int[][] spMatrix;
+
+	public boolean[] inserted;
+	
+	// Labels
+	private int labels[][];
+	
+	// Boolean that tells if the node is visited for first time
+	boolean firstTime = true;
+
+	private int usedLabels = 0;
+	
+	/**
 	// Labels
 	double LabelTime1;
 	double LabelTime2;
@@ -33,19 +66,37 @@ public class VertexPulse {
 	int maxTime;
 	int minTime;
 	int maxDist;
-
-	// SP stuff
-	public static final int infinity = (int)Double.POSITIVE_INFINITY;
-	private EdgePulse reverseEdges;
-	private int id;
+	
 	private VertexPulse leftDist;
 	private VertexPulse rigthDist;
 	private VertexPulse leftTime;
 	private VertexPulse rigthTime;
 	private boolean insertedDist;
 	private boolean insertedTime;
-
+	*/
 	
+	public VertexPulse(int iD) {
+		id = iD;
+		spMatrix = new int[DataHandler.num_attributes][DataHandler.num_attributes];
+		left  = new  VertexPulse[DataHandler.num_attributes];
+		rigth = new  VertexPulse[DataHandler.num_attributes];
+		inserted = new boolean[DataHandler.num_attributes];
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			spMatrix[i][i] = infinity;
+			inserted[i] = false;
+			left[i] = this;
+			rigth[i] = this;
+		}
+
+		labels = new int[DataHandler.numLabels][DataHandler.num_attributes];
+		for (int k = 0; k < DataHandler.numLabels; k++) {
+			for (int j = 0; j < DataHandler.num_attributes; j++) {
+				labels[k][j] = infinity;
+			}
+		}
+		magicIndex = new ArrayList<Integer>();
+	}
+	/**
 	public VertexPulse(int i) {
 		id = i;
 		insertedDist = false;
@@ -54,7 +105,6 @@ public class VertexPulse {
 
 		maxTime = 0;
 		maxDist = 0;
-
 
 		leftDist = this;
 		rigthDist = this;
@@ -69,7 +119,7 @@ public class VertexPulse {
 		
 		magicIndex = new ArrayList<Integer>();
 	}
-	
+	*/
 	public int  getID()
 	{
 		return id;
@@ -85,11 +135,12 @@ public class VertexPulse {
 	
 	
 	public EdgePulse getReversedEdges() {
-		if(reverseEdges!= null){
+		//if(reverseEdges!= null){
 			return reverseEdges;
-		}return new EdgePulse(1,1,0, this,this , -1);
+		//}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
+	/*
 	public void setMinDist(int c){
 		minDist = c;
 	}
@@ -123,14 +174,14 @@ public class VertexPulse {
 	}
 	
 	public int getMinStDev() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	 */
 	/**
 	 * Unlink a vertex from the bucket
 	 * @return true, if the buckets gets empty
 	 */
+	/*
 	public boolean unLinkVertexDist(){
 		if(rigthDist.getID() == id){
 			leftDist=this;
@@ -174,11 +225,13 @@ public class VertexPulse {
 	{
 		rigthTime = null;
 	}
+	*/
 	/**
 	 * Insert a vertex in a bucket. 
 	 * New vertex is inserted on the left of the bucket entrance 
 	 * @param v vertex in progress to be inserted
 	 */
+	/*
 	public void insertVertexDist(VertexPulse v) {
 		v.setLeftDist(leftDist);
 		v.setRigthDist(this);
@@ -192,10 +245,11 @@ public class VertexPulse {
 		leftTime.setRigthTime(v);
 		leftTime = v;
 	}
-	
+	*/
 	/**
 	 * Distance basic methods
 	 */
+	/*
 	public void setLeftDist(VertexPulse v){
 		leftDist= v;
 	}
@@ -214,9 +268,11 @@ public class VertexPulse {
 	public boolean isInserteDist(){
 		return insertedDist;
 	}
+	*/
 	/**
 	 * Time basic methods
 	 */
+	/*
 	public void setLeftTime(VertexPulse v){
 		leftTime= v;
 	}
@@ -235,15 +291,17 @@ public class VertexPulse {
 	public boolean isInsertedTime(){
 		return insertedTime;
 	}
-	
-	
-	
-	
-
+	*/
+	public void reset() {
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			inserted[i] = false;
+		}
+	}
+	/**
 	public void reset(){
 		insertedDist = false;
 	}
-	
+	*/
 	// This is the pulse procedure
 	public void pulse(int PTime, int PDist, ArrayList<Integer> path) 
 	{
