@@ -297,11 +297,14 @@ public class VertexPulse {
 			inserted[i] = false;
 		}
 	}
+	
 	/**
 	public void reset(){
 		insertedDist = false;
 	}
 	*/
+	
+	/**
 	// This is the pulse procedure
 	public void pulse(int PTime, int PDist, ArrayList<Integer> path) 
 	{
@@ -342,12 +345,12 @@ public class VertexPulse {
 			PulseGraph.Visited[id]=0;
 		}
 	}
-
+	 */
+	
 	private void Sort(ArrayList<Integer> set) 
 	{
 		QS(magicIndex, 0, magicIndex.size()-1);
 	}
-	
 	
 	public int colocar(ArrayList<Integer> e, int b, int t)
 	{
@@ -371,8 +374,6 @@ public class VertexPulse {
 	    return pivote;
 	} 
 	 
-	 
-	 
 	public void QS(ArrayList<Integer> e, int b, int t)
 	{
 		 int pivote;
@@ -382,6 +383,8 @@ public class VertexPulse {
 	        QS(e,pivote+1,t);
 	     }  
 	}
+	
+	/**
 	public boolean CheckLabels( double PTime, double PDist)
 	// Label pruning strategy
 	{
@@ -392,9 +395,9 @@ public class VertexPulse {
 		}
 		return false;
 	}
+	*/
 	
-	
-	
+	/**
 	private void changeLabels(int PTime, int PDist) {
 		// Stores the best distance
 		if (PDist <= LabelDist1) {
@@ -410,11 +413,20 @@ public class VertexPulse {
 			LabelDist3 = PDist;
 		}
 	}
+	*/
+	
+	public int getCompareCriteria() {
+		int suma = 0;
+		for (int j = 0; j <  DataHandler.num_attributes; j++) {
+			suma += this.spMatrix[j][j];
+		}
+		return suma;
+	}
+	/**
 	public int getCompareCriteria(){
 		return getMinDist();
 	}
-
-	
+	*/
 
 
 }
