@@ -16,29 +16,52 @@ package edu.uniandes.copa.Jpulse;
 
 import java.util.ArrayList;
 
-
-
 public class FinalVertexPulse extends VertexPulse {
 	
 	// Node id
-	private int id;
+	public int id;
 	
 	// SP stuff
+	private EdgePulse reverseEdges;
+	/**
 	private VertexPulse bLeft;
 	private VertexPulse bRigth;
-	private EdgePulse reverseEdges;
 	
 	// Bounds
 	int minDist;
 	int maxTime;
 	int minTime;
 	int maxDist;
+	*/
 	
-	private boolean inserted;
+	/**
+	 * This matrix contains the sp bounds for each node M_ii correspond to the
+	 * sp from the end node to this node of the objective i. M_ij correspond to
+	 * the objective consumptions of the objective j when the objective i is
+	 * minimum;
+	 */
+	public int[][] spMatrix;
+	private PulseGraph pg;
+	private boolean [] inserted;
 	
 	int c=0;
 	int d=0;
 	int sd=0;
+	
+	public FinalVertexPulse(int iD, PulseGraph npg) {
+		super(iD);
+		pg= npg;
+		id = iD;
+		spMatrix = new int[DataHandler.num_attributes][DataHandler.num_attributes];
+		inserted = new boolean[DataHandler.num_attributes];
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			spMatrix[i][i] = infinity;
+			inserted[i] = false;
+			//left[i] = this;
+			//rigth[i] = this;
+		}
+	}
+	/**
 	public FinalVertexPulse(int i) {
 		super(i);
 		id = i;
@@ -50,7 +73,7 @@ public class FinalVertexPulse extends VertexPulse {
 		bLeft = this;
 		bRigth = this;
 	}
-
+    */
 	
 	public int  getID()
 	{
@@ -73,11 +96,12 @@ public class FinalVertexPulse extends VertexPulse {
 		return null;
 	}
 	public EdgePulse getReversedEdges() {
-		if(reverseEdges!= null){
+		//if(reverseEdges!= null){
 			return reverseEdges;
-		}return new EdgePulse(1,1,0, this,this , -1);
+		//}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
+	/*
 	public void setMinDist(int c){
 		minDist = c;
 	}
@@ -109,12 +133,13 @@ public class FinalVertexPulse extends VertexPulse {
 	public int getMaxDist(){
 		return maxDist;
 	}
-	
+	*/
 	
 	/**
 	 * Unlink a vertex from the bucket
 	 * @return true, if the buckets gets empty
 	 */
+	/*
 	public boolean unLinkVertexDist(){
 		if(bRigth.getID() == id){
 			bLeft=this;
@@ -128,18 +153,19 @@ public class FinalVertexPulse extends VertexPulse {
 			return false;
 		}
 	}
+	*/
 	/**
 	 * Insert a vertex in a bucket. 
 	 * New vertex is inserted on the left of the bucket entrance 
 	 * @param v vertex in progress to be inserted
 	 */
+	/*
 	public void insertVertexDist(VertexPulse v) {
 		v.setLeftDist(bLeft);
 		v.setRigthDist(this);
 		bLeft.setRigthDist(v);
 		bLeft = v;
 	}
-	
 	
 	public void setLeftDist(VertexPulse v){
 		bLeft= v;
@@ -167,7 +193,8 @@ public class FinalVertexPulse extends VertexPulse {
 		maxDist = MD- minDist;
 		maxTime = MT - minTime;
 	}
-		
+	*/
+	
 	public void pulse(int PTime, int PDist,ArrayList<Integer> path) {
 		// Add node id to path
 		path.add(id);

@@ -83,7 +83,7 @@ public class DataHandler {
 			}
 		}
 		// The final node is a FinalVertexPulse 
-		FinalVertexPulse vv = new FinalVertexPulse(LastNode-1);
+		FinalVertexPulse vv = new FinalVertexPulse(LastNode-1, Gd);
 		Gd.addFinalVertex(vv);
 	}
 	

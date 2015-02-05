@@ -39,7 +39,7 @@ public class PulseMain {
 		// Begin the time count						
 		double Atime = System.nanoTime();
 		// Reverse the network and run SP for distance and time 
-		DukqstraDist spDist = new DukqstraDist(network, Instance.LastNode-1);
+		/**DukqstraDist spDist = new DukqstraDist(network, Instance.LastNode-1);
 		DukqstraTime spTime = new DukqstraTime(network, Instance.LastNode-1);
 		tDist = new Thread(new ShortestPathTask(1, spDist, null));
 		tTime = new Thread(new ShortestPathTask(0, null,  spTime));
@@ -47,11 +47,12 @@ public class PulseMain {
 		tTime.start();
 		tDist.join();
 		tTime.join();
+		
 		// MD is the distance for the best time path
 		int MD=network.getVertexByID(Instance.Source-1).getMaxDist();
 		// Set the first primal bound
 		network.setPrimalBound(MD);
-				
+		*/		
 		///////////////////////////////////// PULSE /////////////////////////////////////////////////////////////
 		// Create an empty path
 		ArrayList<Integer> Path = new ArrayList<Integer>();

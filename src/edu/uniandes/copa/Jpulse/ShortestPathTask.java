@@ -14,7 +14,22 @@
 package edu.uniandes.copa.Jpulse;
 
 public class ShortestPathTask implements Runnable {
-
+	
+	private DIKBD dikbd;
+	private int objctive;
+	private int algoRuning;
+	
+	public ShortestPathTask(int obj, DIKBD sp) {
+		//quienES 1 Dist, 0 Time;
+		objctive = obj;
+		dikbd = sp;
+	}
+	
+	@Override
+	public void run() {
+		dikbd.runAlgorithm();
+	}	
+	/**
 	private DukqstraDist spDist; 
 	private DukqstraTime spTime;
 	private int algoRuning;
@@ -36,7 +51,5 @@ public class ShortestPathTask implements Runnable {
 			spTime.runAlgTime();
 		}
 	}
-
-	
-	
+	*/
 }
