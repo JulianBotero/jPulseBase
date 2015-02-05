@@ -32,7 +32,7 @@ public class Settings {
 	int Source;
 	int numObjs;
 
-	double TimeC;
+	int TimeC;
 	double Alfa;
 	// int seed;
 
@@ -52,7 +52,7 @@ public class Settings {
 		int col = 0;
 
 		// read each line of text file
-		while ((line = bufRdr.readLine()) != null && row < 6) {
+		while ((line = bufRdr.readLine()) != null && row < 8) {
 			StringTokenizer st = new StringTokenizer(line, ":");
 			while (st.hasMoreTokens()) {
 				// get next token and store it in the array
@@ -71,7 +71,7 @@ public class Settings {
 		Source = Integer.parseInt(readed[3][1]);
 		LastNode = Integer.parseInt(readed[4][1]);
 		numObjs = Integer.parseInt(readed[5][1]);
-		TimeC = Double.parseDouble(readed[6][1]);
+		TimeC = Integer.parseInt(readed[6][1]);
 		Alfa = Double.parseDouble(readed[7][1]);
 
 	}

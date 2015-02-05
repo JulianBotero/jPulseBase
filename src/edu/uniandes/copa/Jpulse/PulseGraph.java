@@ -32,27 +32,25 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	 * // SP stuff private int Cd; private int Ct; private int Csd;
 	 */
 	// Time constraint
-	static double TimeC;
+	static int TimeC;
 	// Primal bound
-	static double PrimalBound;
+	static int PrimalBound;
 	// The best solution found is globally stored here
 	static ArrayList<Integer> Path;
 	// The time for the best solution found (the distance is stored in the
 	// primal bound)
-	static double TimeStar;
+	static int TimeStar;
 	// Binary indicator to know if visiting a node creates a cycle
 	static int[] Visited = new int[DataHandler.NumNodes];
 
 	public PulseGraph(int numNodes) {
 		super();
 		this.numNodes = numNodes;
-		for (int i = 0; i < DataHandler.num_attributes; i++) {
-			C[i] = 0;
-		}
+		// for (int i = 0; i < DataHandler.num_attributes; i++) {
+		// C[i] = 0;
+		// }
 		/**
-		 * Cd = 0; 
-		 * Ct = 0; 
-		 * Csd = 0;
+		 * Cd = 0; Ct = 0; Csd = 0;
 		 */
 		vertexes = new VertexPulse[numNodes];
 		Path = new ArrayList<Integer>();
@@ -229,20 +227,14 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	public int getC(int obj) {
 		return C[obj];
 	}
+
 	/**
-	 * public int getCd() {
-		return C[0];
-	}
-
-	public int getCt() {
-		return C[1];
-	}
-
-	public int getCsd() {
-		return C[2];
-	}
+	 * public int getCd() { return C[0]; }
+	 * 
+	 * public int getCt() { return C[1]; }
+	 * 
+	 * public int getCsd() { return C[2]; }
 	 */
-	 
 
 	public void resetNetwork() {
 		for (int i = 0; i < numNodes; i++) {
@@ -250,7 +242,7 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 		}
 	}
 
-	public void SetConstraint(double timeC) {
+	public void SetConstraint(int timeC) {
 
 		this.TimeC = timeC;
 

@@ -109,7 +109,7 @@ public class DataHandler {
 		upLoadNodes();
 		
 		while ((line = bufRdr.readLine()) != null && row < NumArcs + 1) {
-			StringTokenizer st = new StringTokenizer(line, " ");
+			StringTokenizer st = new StringTokenizer(line, "	");
 			while (st.hasMoreTokens()) {
 				// get next token and store it in the array
 				readed[col] = st.nextToken();
@@ -121,8 +121,8 @@ public class DataHandler {
 				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1); 
 				
 				int[] atris = new int[num_attributes];
-				for (int i = 1; i < num_attributes; i++) { //int i = 0
-					atris[i] = Integer.parseInt(readed[2 + i]);
+				for (int i = 0; i < num_attributes; i++) { //int i = 0
+					atris[i] = Integer.parseInt(readed[4 + i]);
 					atributes[row - 1][i] = atris[i];
 				}
 				//Distance[row - 1] = Integer.parseInt(readed[3]);

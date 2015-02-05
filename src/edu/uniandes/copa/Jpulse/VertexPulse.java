@@ -141,8 +141,19 @@ public class VertexPulse {
 		//}return new EdgePulse(1,1,0, this,this , -1);
 	}
 	
-	public double getMinSP(int c){
+	public int getMinSP(int c){
 		return spMatrix[c][c];
+	}
+	
+	public int getMaxDistSP(){
+		int maxDist = 0;
+		
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			if (PulseGraph.vertexes[0].spMatrix[i][2] > maxDist) {
+				maxDist = PulseGraph.vertexes[0].spMatrix[i][2] ;
+			}
+		}
+		return maxDist;
 	}
 	/*
 	public void setMinDist(int c){
@@ -310,7 +321,7 @@ public class VertexPulse {
 	
 	
 	// This is the pulse procedure
-	public void pulse(int PTime, int PDist, double PStDev, ArrayList<Integer> path) 
+	public void pulse(int PTime, int PDist, int PStDev, ArrayList<Integer> path) 
 	{
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
@@ -338,7 +349,7 @@ public class VertexPulse {
 				// Update distance and time
 				int NewMean = 0;
 				int NewDist = 0;
-				double NewStDev = 0;
+				int NewStDev = 0;
 				double NewTTB = 0;
 				NewMean = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
 				NewDist = (PDist + DataHandler.atributes[magicIndex.get(i)][0]);
