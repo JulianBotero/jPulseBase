@@ -44,9 +44,11 @@ public class FinalVertexPulse extends VertexPulse {
 	private PulseGraph pg;
 	private boolean [] inserted;
 	
+	/**
 	int c=0;
 	int d=0;
 	int sd=0;
+	*/
 	
 	public FinalVertexPulse(int iD, PulseGraph npg) {
 		super(iD);
@@ -57,8 +59,8 @@ public class FinalVertexPulse extends VertexPulse {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			spMatrix[i][i] = infinity;
 			inserted[i] = false;
-			//left[i] = this;
-			//rigth[i] = this;
+			left[i] = this;
+			rigth[i] = this;
 		}
 	}
 	/**

@@ -23,8 +23,7 @@ import org.jgrapht.Graph;
 public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	// Attributes
 	private static int[] C;
-
-	// The nodes
+	// Nodes
 	static VertexPulse[] vertexes;
 	// Number of nodes
 	private int numNodes;
@@ -46,9 +45,10 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	public PulseGraph(int numNodes) {
 		super();
 		this.numNodes = numNodes;
-		// for (int i = 0; i < DataHandler.num_attributes; i++) {
-		// C[i] = 0;
-		// }
+		C = new int[DataHandler.num_attributes];
+		for (int i = 0; i < DataHandler.num_attributes; i++) {
+			C[i] = 0;
+		}
 		/**
 		 * Cd = 0; Ct = 0; Csd = 0;
 		 */
@@ -71,11 +71,10 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 		return vertexes[id];
 	}
 
-	public EdgePulse addWeightedEdge(VertexPulse sourceVertex,
-			VertexPulse targetVertex, int[] atris, int id) {
+	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex,  int[] atris , int id) {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
-			if (atris[i] > C[i]) {
-				C[i] = atris[i];
+			if(atris[i]>C[i]){
+				C[i]=atris[i];
 			}
 		}
 

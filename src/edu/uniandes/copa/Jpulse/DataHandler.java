@@ -64,7 +64,6 @@ public class DataHandler {
 		NumNodes = Instance.NumNodes;
 		LastNode = Instance.LastNode;
 		Source = Instance.Source;
-		//seed = Instance.seed;//System.out.println(seed+"sedd");
 		Arcs = new int[Instance.NumArcs][2];
 		atributes = new int[Instance.NumArcs][num_attributes];
 		//Distance = new int[Instance.NumArcs];
@@ -78,10 +77,10 @@ public class DataHandler {
 		// All nodes are VertexPulse except the final node
 		for (int i = 0; i < NumNodes; i++) {
 			if(i!=(LastNode-1)){
-				Gd.addVertex(new VertexPulse(i) );
+				Gd.addVertex(new VertexPulse(i));
 			}
 		}
-		// The final node is a FinalVertexPulse 
+		// The final node is a FinalVertexPulse
 		FinalVertexPulse vv = new FinalVertexPulse(LastNode-1, Gd);
 		Gd.addFinalVertex(vv);
 	}
@@ -121,8 +120,8 @@ public class DataHandler {
 				Arcs[row - 1][1] = (Integer.parseInt(readed[2]) - 1); 
 				
 				int[] atris = new int[num_attributes];
-				for (int i = 0; i < num_attributes; i++) { //int i = 0
-					atris[i] = Integer.parseInt(readed[4 + i]);
+				for (int i = 0; i < num_attributes; i++) {
+					atris[i] = Integer.parseInt(readed[3 + i]);
 					atributes[row - 1][i] = atris[i];
 				}
 				//Distance[row - 1] = Integer.parseInt(readed[3]);

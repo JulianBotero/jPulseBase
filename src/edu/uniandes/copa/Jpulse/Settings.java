@@ -34,7 +34,6 @@ public class Settings {
 
 	int TimeC;
 	double Alfa;
-	// int seed;
 
 	ArrayList<Integer> LastNodeS = new ArrayList<Integer>();
 	ArrayList<Integer> SourceS = new ArrayList<Integer>();
@@ -58,7 +57,6 @@ public class Settings {
 				// get next token and store it in the array
 				readed[row][col] = st.nextToken();
 				col++;
-
 			}
 			col = 0;
 			row++;
