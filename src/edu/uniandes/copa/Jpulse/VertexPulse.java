@@ -216,13 +216,14 @@ public class VertexPulse {
 	 */
 
 	// This is the pulse procedure
-	public void pulse(int PTime, int PDist, int PStDev, ArrayList<Integer> path) {
+	public void pulse(int PTime, int PDist, int PVar, double Alfa,
+			ArrayList<Integer> path) {
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
 			this.firstTime = false;
 			this.Sort(this.magicIndex);
-			left[0] = null;
-			rigth[0] = null;
+			// left[0] = null;
+			// rigth[0] = null;
 			/**
 			 * leftDist = null; rigthDist = null;
 			 */
@@ -230,11 +231,13 @@ public class VertexPulse {
 		}
 
 		// Label update
-		changeLabels(PTime, PDist, PStDev);
+		changeLabels(PTime, PDist, PVar);
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
 			path.add(id);
+			System.out.println("path: " + path);
+			System.out.println("");
 			// Update the visit indicator
 			PulseGraph.Visited[id] = 1;
 			// Pulse all the head nodes for the outgoing arcs
@@ -242,26 +245,34 @@ public class VertexPulse {
 				// Update distance and time
 				int NewMean = 0;
 				int NewDist = 0;
-				int NewStDev = 0;
+				int NewVar = 0;
 				double NewTTB = 0;
-				NewMean = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
 				NewDist = (PDist + DataHandler.atributes[magicIndex.get(i)][0]);
-				NewStDev = (int)Math.round(Math.sqrt(Math.pow(PStDev, 2)
-						+ Math.pow(DataHandler.atributes[magicIndex.get(i)][2],
-								2)));
-				// TODO REVISAR Alfa
-				NewTTB = NormalDistQuick.inverseF(NewMean, NewStDev, 0.9);
+				NewMean = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
+				NewVar = PVar + DataHandler.atributes[magicIndex.get(i)][2];
+				NewTTB = NormalDistQuick.inverseF(NewMean+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(1),Math.sqrt(NewVar+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(2)), Alfa);
+				System.out.println("Arco: " + magicIndex.get(i) + ", CostAcum: "
+						+ NewDist+ ", PrimalBoundC: "
+								+ PulseGraph.PrimalBound
+						+ ", MeanAcum: "
+						+ NewMean
+						+ ", VarAcum: "
+						+ NewVar
+						+ ", TTB:"
+						+ NewTTB
+						+ ", CotaTiempo: "
+						+ PulseGraph.TimeC
+						+ ", CotaIT: "
+						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(1)
+						+ ", CotaIV: "
+						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(2));
 				// Pruning strategies: infeasibility, bounds and labels
-				if (NewTTB <= (PulseGraph.TimeC - PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-						.get(i)][1]].getMinSP(1))
-						&& NewDist <= (PulseGraph.PrimalBound - PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-								.get(i)][1]].getMinSP(0)) // &&
+				if ((NewTTB <= PulseGraph.TimeC) && (NewDist + PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(0)) <= PulseGraph.PrimalBound // &&
 				// !PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].CheckLabels(NewTTB,
 				// NewDist, NewStDev)
 				) {
 					// If not pruned the pulse travels to the next head node
-					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
-							.pulse(NewMean, NewDist, NewStDev, path);
+					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].pulse(NewMean, NewDist, NewVar, Alfa, path);
 				}
 			}
 			// Updates path and visit indicator for backtrack

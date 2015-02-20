@@ -36,8 +36,7 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	static int PrimalBound;
 	// The best solution found is globally stored here
 	static ArrayList<Integer> Path;
-	// The time for the best solution found (the distance is stored in the
-	// primal bound)
+	// The time for the best solution found (the distance is stored in the primal bound)
 	static int TimeStar;
 	// Binary indicator to know if visiting a node creates a cycle
 	static int[] Visited = new int[DataHandler.NumNodes];

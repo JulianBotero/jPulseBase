@@ -22,14 +22,16 @@ import java.util.ArrayList;
 
 public class PulseMain {
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException,
+			InterruptedException {
 
 		// Read a config file with the instance information
 		String ini = "Config-Test-NormDistr.txt";
 		Settings Instance;
 		Instance = new Settings(ini);
 		// Read the data file and store the data on a DataHandler
-		DataHandler data = new DataHandler(Instance, Instance.numObjs);// Num Attributes
+		DataHandler data = new DataHandler(Instance, Instance.numObjs);// Num
+																		// Attributes
 		data.ReadDimacs();
 		// Create the network and set the time constraint
 		PulseGraph network = data.getGd();
@@ -50,13 +52,14 @@ public class PulseMain {
 		 * new Thread(new ShortestPathTask(0, null, spTime)); tDist.start();
 		 * tTime.start(); tDist.join(); tTime.join();
 		 */
-		 // MD is the distance for the best time path 
-		/**int MD=network.getVertexByID(Instance.Source-1).getMaxDistSP(); 
+		// MD is the distance for the best time path
+		/**
+		 * int MD=network.getVertexByID(Instance.Source-1).getMaxDistSP();
 		 */
-		int MD=(int) Double.POSITIVE_INFINITY;
-		// Set the first primal bound 
-		 network.setPrimalBound(MD);
-		 
+		int MD = (int) Double.POSITIVE_INFINITY;
+		// Set the first primal bound
+		network.setPrimalBound(MD);
+
 		// We need one SP algorithm for each weight/objective
 		DIKBD[] spAlgo = new DIKBD[Instance.numObjs];
 		Thread[] tSp = new Thread[Instance.numObjs];
@@ -83,7 +86,7 @@ public class PulseMain {
 		// Create an empty path
 		ArrayList<Integer> Path = new ArrayList<Integer>();
 		// Pulse the origin node
-		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0, Path);
+		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0,Instance.Alfa, Path);
 		// Report the results
 		System.out.println("EXECUTION TIME: " + (System.nanoTime() - Atime)
 				/ 1000000000);

@@ -59,8 +59,8 @@ public class FinalVertexPulse extends VertexPulse {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			spMatrix[i][i] = infinity;
 			inserted[i] = false;
-			left[i] = this;
-			rigth[i] = this;
+			//left[i] = this;
+			//rigth[i] = this;
 		}
 	}
 	/**
