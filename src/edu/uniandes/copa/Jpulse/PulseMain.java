@@ -88,13 +88,14 @@ public class PulseMain {
 		// Pulse the origin node
 		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0,Instance.Alfa, Path);
 		// Report the results
+		System.out.println("");
+		System.out.println("-------------------------------------------------------------");
 		System.out.println("EXECUTION TIME: " + (System.nanoTime() - Atime)
 				/ 1000000000);
 		System.out
 				.println("***************OPTIMAL SOLUTION*****************************");
-		System.out.println("Distance: " + network.PrimalBound);
-		System.out.println("Time: " + network.TimeStar);
+		System.out.println("Cost: " + network.PrimalBound);
+		System.out.println("Time: " + network.TimeC);
 		System.out.println("Optimal path: " + network.Path);
-
 	}
 }

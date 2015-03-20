@@ -4,7 +4,7 @@ Number of Nodes:6
 Start Node:1
 End Node:6
 Attributes:3
-Time Constraint:30
+Time Constraint:15
 Alfa:0.9
 
 // This is the Test network with p=0.1

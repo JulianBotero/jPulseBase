@@ -30,9 +30,6 @@ public class VertexPulse {
 
 	public int id;
 
-	public VertexPulse[] left;
-	public VertexPulse[] rigth;
-
 	/**
 	 * This matrix contains the sp bounds for each node. spMatrix(i,i)
 	 * correspond to the sp from the end node to this node of the objective i.
@@ -44,62 +41,33 @@ public class VertexPulse {
 	public boolean[] inserted;
 
 	// Labels
-	private int labels[][];
+	private double labels[][];
 
 	// Boolean that tells if the node is visited for first time
 	boolean firstTime = true;
 
 	private int usedLabels = 0;
 
-	/**
-	 * // Labels double LabelTime1; double LabelTime2; double LabelTime3; double
-	 * LabelDist1; double LabelDist2; double LabelDist3;
-	 * 
-	 * // Boolean that tells if the node is visited for first time boolean
-	 * firstTime = true; // Bounds to reach the end node int minDist; int
-	 * maxTime; int minTime; int maxDist;
-	 * 
-	 * private VertexPulse leftDist; private VertexPulse rigthDist; private
-	 * VertexPulse leftTime; private VertexPulse rigthTime; private boolean
-	 * insertedDist; private boolean insertedTime;
-	 */
-
 	public VertexPulse(int iD) {
 		id = iD;
 		spMatrix = new int[DataHandler.num_attributes][DataHandler.num_attributes];
-		left = new VertexPulse[DataHandler.num_attributes];
-		rigth = new VertexPulse[DataHandler.num_attributes];
+
 		inserted = new boolean[DataHandler.num_attributes];
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			spMatrix[i][i] = infinity;
 			inserted[i] = false;
-			left[i] = this;
-			rigth[i] = this;
+
 		}
 
-		labels = new int[DataHandler.numLabels][DataHandler.num_attributes];
+		labels = new double[DataHandler.numLabels][DataHandler.num_attributes + 1];
 		for (int k = 0; k < DataHandler.numLabels; k++) {
-			for (int j = 0; j < DataHandler.num_attributes; j++) {
+			for (int j = 0; j < DataHandler.num_attributes + 1; j++) {
 				labels[k][j] = infinity;
 			}
 		}
 		magicIndex = new ArrayList<Integer>();
 	}
 
-	/**
-	 * public VertexPulse(int i) { id = i; insertedDist = false; minDist =
-	 * infinity; minTime = infinity;
-	 * 
-	 * maxTime = 0; maxDist = 0;
-	 * 
-	 * leftDist = this; rigthDist = this; leftTime = this; rigthTime = this;
-	 * LabelTime1 = Double.POSITIVE_INFINITY; LabelDist1 =
-	 * Double.POSITIVE_INFINITY; LabelTime2 = Double.POSITIVE_INFINITY;
-	 * LabelDist2 = Double.POSITIVE_INFINITY; LabelTime3 =
-	 * Double.POSITIVE_INFINITY; LabelDist3 = Double.POSITIVE_INFINITY;
-	 * 
-	 * magicIndex = new ArrayList<Integer>(); }
-	 */
 	public int getID() {
 		return id;
 	}
@@ -132,79 +100,6 @@ public class VertexPulse {
 		return maxDist;
 	}
 
-	/*
-	 * public void setMinDist(int c){ minDist = c; }
-	 * 
-	 * public int getMinDist(){ return minDist; }
-	 * 
-	 * public void setMaxDist(int md){ maxDist = md; }
-	 * 
-	 * public int getMaxDist(){ return maxDist; }
-	 * 
-	 * public void setMaxTime(int mt){ maxTime = mt; }
-	 * 
-	 * public int getMaxTime(){ return maxTime; }
-	 * 
-	 * public void setMinTime(int t){ minTime = t; }
-	 * 
-	 * public int getMinTime(){ return minTime; }
-	 * 
-	 * public int getMinStDev() { return 0; }
-	 */
-	/**
-	 * Unlink a vertex from the bucket
-	 * 
-	 * @return true, if the buckets gets empty
-	 */
-	/*
-	 * public boolean unLinkVertexDist(){ if(rigthDist.getID() == id){
-	 * leftDist=this; rigthDist=this; return true; }else{
-	 * leftDist.setRigthDist(rigthDist); rigthDist.setLeftDist(leftDist);
-	 * leftDist = this; rigthDist = this; return false; } } public boolean
-	 * unLinkVertexTime(){ if(rigthTime.getID() == id){ leftTime=this;
-	 * rigthTime=this; return true; }else{ leftTime.setRigthTime(rigthTime);
-	 * rigthTime.setLeftTime(leftTime); leftTime = this; rigthTime = this;
-	 * return false; } }
-	 * 
-	 * public void fastUnlinkDist(){ leftDist=this; rigthDist=this; } public
-	 * void fastUnlinkTime(){ leftTime = this; rigthTime = this; } public void
-	 * unlinkRighBoundDist() { rigthDist = null; } public void
-	 * unlinkRighBoundTime() { rigthTime = null; }
-	 */
-	/**
-	 * Insert a vertex in a bucket. New vertex is inserted on the left of the
-	 * bucket entrance
-	 * 
-	 * @param v
-	 *            vertex in progress to be inserted
-	 */
-	/*
-	 * public void insertVertexDist(VertexPulse v) { v.setLeftDist(leftDist);
-	 * v.setRigthDist(this); leftDist.setRigthDist(v); leftDist = v; }
-	 * 
-	 * public void insertVertexTime(VertexPulse v) { v.setLeftTime(leftTime);
-	 * v.setRigthTime(this); leftTime.setRigthTime(v); leftTime = v; }
-	 */
-	/**
-	 * Distance basic methods
-	 */
-	/*
-	 * public void setLeftDist(VertexPulse v){ leftDist= v; } public void
-	 * setRigthDist(VertexPulse v){ rigthDist= v; } public VertexPulse
-	 * getBLeftDist(){ return leftDist; } public VertexPulse getBRigthDist(){
-	 * return rigthDist; } public void setInsertedDist(){ insertedDist = true; }
-	 * public boolean isInserteDist(){ return insertedDist; }
-	 */
-	/**
-	 * Time basic methods
-	 */
-	/*
-	 * public void setLeftTime(VertexPulse v){ leftTime= v; } public void
-	 * setRigthTime(VertexPulse v){ rigthTime= v; } public VertexPulse
-	 * getBLeftTime(){ return leftTime; } public VertexPulse getBRigthTime(){
-	 * return rigthTime; } public void setInsertedTime(){ insertedTime = true; }
-	 * public boolean isInsertedTime(){ return insertedTime; }
-	 */
 	public void reset() {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			inserted[i] = false;
@@ -216,22 +111,18 @@ public class VertexPulse {
 	 */
 
 	// This is the pulse procedure
-	public void pulse(int PTime, int PDist, int PVar, double Alfa,
+	public void pulse(int PCost , int PMean, int PVar, double Alfa,
 			ArrayList<Integer> path) {
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
 			this.firstTime = false;
 			this.Sort(this.magicIndex);
-			// left[0] = null;
-			// rigth[0] = null;
-			/**
-			 * leftDist = null; rigthDist = null;
-			 */
 			reverseEdges = null;
 		}
-
-		// Label update
-		changeLabels(PTime, PDist, PVar);
+		
+		//Label Update
+		//double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar),Alfa);
+		//changeLabels(PCost, PMean, PVar, PTTBl);
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
@@ -243,36 +134,58 @@ public class VertexPulse {
 			// Pulse all the head nodes for the outgoing arcs
 			for (int i = 0; i < magicIndex.size(); i++) {
 				// Update distance and time
+				int NewCost = 0;
 				int NewMean = 0;
-				int NewDist = 0;
 				int NewVar = 0;
-				double NewTTB = 0;
-				NewDist = (PDist + DataHandler.atributes[magicIndex.get(i)][0]);
-				NewMean = (PTime + DataHandler.atributes[magicIndex.get(i)][1]);
+				double NewTTBp = 0;
+				double NewTTBi = 0;
+				NewCost = (PCost + DataHandler.atributes[magicIndex.get(i)][0]);
+				NewMean = (PMean + DataHandler.atributes[magicIndex.get(i)][1]);
 				NewVar = PVar + DataHandler.atributes[magicIndex.get(i)][2];
-				NewTTB = NormalDistQuick.inverseF(NewMean+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(1),Math.sqrt(NewVar+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(2)), Alfa);
-				System.out.println("Arco: " + magicIndex.get(i) + ", CostAcum: "
-						+ NewDist+ ", PrimalBoundC: "
-								+ PulseGraph.PrimalBound
+				NewTTBp = NormalDistQuick.inverseF(NewMean, Math.sqrt(NewVar),
+						Alfa);
+				NewTTBi = NormalDistQuick
+						.inverseF(
+								NewMean
+										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+												.get(i)][1]].getMinSP(1),
+								Math.sqrt(NewVar
+										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+												.get(i)][1]].getMinSP(2)), Alfa);
+				System.out.println("Arco: "
+						+ magicIndex.get(i)
+						+ ", CostAcum: "
+						+ NewCost
+						+ ", PrimalBoundC: "
+						+ PulseGraph.PrimalBound
 						+ ", MeanAcum: "
 						+ NewMean
 						+ ", VarAcum: "
 						+ NewVar
 						+ ", TTB:"
-						+ NewTTB
+						+ NewTTBi
 						+ ", CotaTiempo: "
 						+ PulseGraph.TimeC
 						+ ", CotaIT: "
-						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(1)
+						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+								.get(i)][1]].getMinSP(1)
 						+ ", CotaIV: "
-						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(2));
-				// Pruning strategies: infeasibility, bounds and labels
-				if ((NewTTB <= PulseGraph.TimeC) && (NewDist + PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].getMinSP(0)) <= PulseGraph.PrimalBound // &&
-				// !PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].CheckLabels(NewTTB,
-				// NewDist, NewStDev)
-				) {
-					// If not pruned the pulse travels to the next head node
-					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]].pulse(NewMean, NewDist, NewVar, Alfa, path);
+						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+								.get(i)][1]].getMinSP(2));
+				// Pruning strategies: infeasibility, bounds and dominance
+				if ((NewTTBi < PulseGraph.TimeC)
+						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+								.get(i)][1]].getMinSP(0)) <= PulseGraph.PrimalBound) {
+					if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+							.CheckLabels1(NewCost, NewMean, NewVar, NewTTBp)) {
+						// If not pruned the pulse travels to the next head node
+						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
+					} else if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+							.CheckLabels2(NewCost, NewMean, NewVar, NewTTBp)) {
+						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
+					}
 				}
 			}
 			// Updates path and visit indicator for backtrack
@@ -317,20 +230,39 @@ public class VertexPulse {
 		}
 	}
 
-	/**
-	 * public boolean CheckLabels( double PTime, double PDist) // Label pruning
-	 * strategy { if((PTime >= LabelTime1 && PDist >= LabelDist1) || (PTime >=
-	 * LabelTime2 && PDist >= LabelDist2) || (PTime >= LabelTime3 && PDist >=
-	 * LabelDist3)){ return true; } return false; }
-	 */
+	// Dominance pruning checking 1
+	public boolean CheckLabels1(int NewCost, int NewMean, int NewVar,
+			double NewTTBp) {
+		for (int i = 0; i < DataHandler.numLabels; i++) {
+			if (NewCost <= labels[i][0] && NewMean <= labels[i][1]
+					&& NewTTBp <= labels[i][2]) {
+				// Update Labels
+				changeLabels(NewCost, NewMean, NewVar, NewTTBp,i);
+				return true;
+			}
+		}
+		return false;
+	}
+	// Dominance pruning checking 2
+		public boolean CheckLabels2(int NewCost, int NewMean, int NewVar,
+				double NewTTBp) {
+			for (int i = 0; i < DataHandler.numLabels; i++) {
+				if (1==1) {
+					//Label Update
+					
+					return true;
+				}
+			}
+			return false;
+		}
+	private void changeLabels(int NewCost, int NewMean, int NewVar,
+			double NewTTBl,int label) {
 
-	private void changeLabels(int PTime, int PDist, double PStDev) {
-		/**
-		 * // Stores the best distance if (PDist <= LabelDist1) { LabelTime1 =
-		 * PTime; LabelDist1 = PDist; // Stores the best time } else if (PTime
-		 * <= LabelTime2) { LabelTime2 = PTime; LabelDist2 = PDist; // Replaces
-		 * the third label } else { LabelTime3 = PTime; LabelDist3 = PDist; }
-		 */
+				labels[label][0]=NewCost;
+				labels[label][1]=NewMean;
+				labels[label][2]=NewVar;
+				labels[label][3]=NewTTBl;
+			
 	}
 
 	public int getCompareCriteria() {

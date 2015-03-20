@@ -31,7 +31,7 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	 * // SP stuff private int Cd; private int Ct; private int Csd;
 	 */
 	// Time constraint
-	static int TimeC;
+	static double TimeC;
 	// Primal bound
 	static int PrimalBound;
 	// The best solution found is globally stored here
@@ -241,15 +241,10 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	}
 
 	public void SetConstraint(int timeC) {
-
 		this.TimeC = timeC;
-
 	}
 
 	public void setPrimalBound(int bound) {
-
 		this.PrimalBound = bound;
-
 	}
-
 }
