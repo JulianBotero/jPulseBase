@@ -40,6 +40,9 @@ public class VertexPulse {
 
 	public boolean[] inserted;
 
+	public VertexPulse[] left;
+	public VertexPulse[] rigth;
+	
 	// Labels
 	private double labels[][];
 
@@ -51,12 +54,15 @@ public class VertexPulse {
 	public VertexPulse(int iD) {
 		id = iD;
 		spMatrix = new int[DataHandler.num_attributes][DataHandler.num_attributes];
-
+		left = new VertexPulse[DataHandler.num_attributes];
+		rigth = new VertexPulse[DataHandler.num_attributes];
+		
 		inserted = new boolean[DataHandler.num_attributes];
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			spMatrix[i][i] = infinity;
 			inserted[i] = false;
-
+			left[i] = this;
+			rigth[i] = this;
 		}
 
 		labels = new double[DataHandler.numLabels][DataHandler.num_attributes + 1];
@@ -173,15 +179,15 @@ public class VertexPulse {
 						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 								.get(i)][1]].getMinSP(2));
 				// Pruning strategies: infeasibility, bounds and dominance
-				if ((NewTTBi < PulseGraph.TimeC)
+				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-								.get(i)][1]].getMinSP(0)) <= PulseGraph.PrimalBound) {
-					if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+								.get(i)][1]].getMinSP(0)) < PulseGraph.PrimalBound) {
+					if (!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
 							.CheckLabels1(NewCost, NewMean, NewVar, NewTTBp)) {
 						// If not pruned the pulse travels to the next head node
 						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
 								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
-					} else if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+					} else if (!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
 							.CheckLabels2(NewCost, NewMean, NewVar, NewTTBp)) {
 						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
 								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
@@ -233,11 +239,12 @@ public class VertexPulse {
 	// Dominance pruning checking 1
 	public boolean CheckLabels1(int NewCost, int NewMean, int NewVar,
 			double NewTTBp) {
+		int control = 0;
 		for (int i = 0; i < DataHandler.numLabels; i++) {
 			if (NewCost <= labels[i][0] && NewMean <= labels[i][1]
 					&& NewTTBp <= labels[i][2]) {
 				// Update Labels
-				changeLabels(NewCost, NewMean, NewVar, NewTTBp,i);
+				changeLabels(NewCost, NewMean, NewVar, NewTTBp, i);
 				return true;
 			}
 		}
@@ -247,22 +254,26 @@ public class VertexPulse {
 		public boolean CheckLabels2(int NewCost, int NewMean, int NewVar,
 				double NewTTBp) {
 			for (int i = 0; i < DataHandler.numLabels; i++) {
-				if (1==1) {
-					//Label Update
-					
-					return true;
+				
+				if (NewCost <= labels[i][0] && NewMean <= labels[i][1]
+						&& NewTTBp > labels[i][2]) {
+					// TODO:
+					double VarInter =0;
+					if(getMinSP(2)>=VarInter){
+						//Label Update
+						changeLabels(NewCost, NewMean, NewVar, NewTTBp, i);
+						return true;
+					}
 				}
 			}
 			return false;
 		}
 	private void changeLabels(int NewCost, int NewMean, int NewVar,
 			double NewTTBl,int label) {
-
 				labels[label][0]=NewCost;
 				labels[label][1]=NewMean;
 				labels[label][2]=NewVar;
 				labels[label][3]=NewTTBl;
-			
 	}
 
 	public int getCompareCriteria() {

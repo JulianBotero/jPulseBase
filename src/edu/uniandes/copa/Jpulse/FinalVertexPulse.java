@@ -63,19 +63,7 @@ public class FinalVertexPulse extends VertexPulse {
 			inserted[i] = false;
 		}
 	}
-	/**
-	public FinalVertexPulse(int i) {
-		super(i);
-		id = i;
-		inserted = false;
-		minDist = infinity;
-		minTime = infinity;
-		maxTime = 0;
-		maxDist = 0;
-		bLeft = this;
-		bRigth = this;
-	}
-    */
+
 	
 	public int  getID()
 	{
