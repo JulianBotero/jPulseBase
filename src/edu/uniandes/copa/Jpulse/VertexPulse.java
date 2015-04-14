@@ -29,7 +29,6 @@ public class VertexPulse {
 	ArrayList<Integer> magicIndex;
 
 	public int id;
-
 	/**
 	 * This matrix contains the sp bounds for each node. spMatrix(i,i)
 	 * correspond to the sp from the end node to this node of the objective i.
@@ -42,7 +41,7 @@ public class VertexPulse {
 
 	public VertexPulse[] left;
 	public VertexPulse[] rigth;
-	
+
 	// Labels
 	private double labels[][];
 
@@ -56,7 +55,7 @@ public class VertexPulse {
 		spMatrix = new int[DataHandler.num_attributes][DataHandler.num_attributes];
 		left = new VertexPulse[DataHandler.num_attributes];
 		rigth = new VertexPulse[DataHandler.num_attributes];
-		
+
 		inserted = new boolean[DataHandler.num_attributes];
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			spMatrix[i][i] = infinity;
@@ -117,7 +116,7 @@ public class VertexPulse {
 	 */
 
 	// This is the pulse procedure
-	public void pulse(int PCost , int PMean, int PVar, double Alfa,
+	public void pulse(int PCost, int PMean, int PVar, double Alfa,
 			ArrayList<Integer> path) {
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
@@ -125,10 +124,10 @@ public class VertexPulse {
 			this.Sort(this.magicIndex);
 			reverseEdges = null;
 		}
-		
-		//Label Update
-		//double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar),Alfa);
-		//changeLabels(PCost, PMean, PVar, PTTBl);
+
+		// Label update
+		double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar), Alfa);
+		changeLabels(PCost, PMean, PVar, PTTBl);
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
@@ -158,6 +157,7 @@ public class VertexPulse {
 								Math.sqrt(NewVar
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 												.get(i)][1]].getMinSP(2)), Alfa);
+				
 				System.out.println("Arco: "
 						+ magicIndex.get(i)
 						+ ", CostAcum: "
@@ -181,17 +181,11 @@ public class VertexPulse {
 				// Pruning strategies: infeasibility, bounds and dominance
 				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-								.get(i)][1]].getMinSP(0)) < PulseGraph.PrimalBound) {
-					if (!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
-							.CheckLabels1(NewCost, NewMean, NewVar, NewTTBp)) {
-						// If not pruned the pulse travels to the next head node
-						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
-								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
-					} else if (!PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
-							.CheckLabels2(NewCost, NewMean, NewVar, NewTTBp)) {
-						PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
-								.pulse(NewCost,NewMean,  NewVar, Alfa, path);
-					}
+								.get(i)][1]].getMinSP(0)) < PulseGraph.PrimalBound
+						&& !CheckLabels(NewCost, NewMean, NewVar, NewTTBp, i,Alfa)) {
+					// If not pruned the pulse travels to the next head node
+					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+							.pulse(NewCost, NewMean, NewVar, Alfa, path);
 				}
 			}
 			// Updates path and visit indicator for backtrack
@@ -236,44 +230,56 @@ public class VertexPulse {
 		}
 	}
 
-	// Dominance pruning checking 1
+	public boolean CheckLabels(int NewCost, int NewMean, int NewVar,
+			double NewTTBp, int i, double Alfa) {
+		if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+				.CheckLabels1(NewCost, NewMean, NewVar, NewTTBp)) {
+			return true;
+		} else if (PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
+				.CheckLabels2(NewCost, NewMean, NewVar, NewTTBp, Alfa)) {
+			return true;
+		}
+		return false;
+	}
+
+	// Dominance pruning checking 1, True if Label dominates pulse
 	public boolean CheckLabels1(int NewCost, int NewMean, int NewVar,
 			double NewTTBp) {
-		int control = 0;
 		for (int i = 0; i < DataHandler.numLabels; i++) {
-			if (NewCost <= labels[i][0] && NewMean <= labels[i][1]
-					&& NewTTBp <= labels[i][2]) {
-				// Update Labels
-				changeLabels(NewCost, NewMean, NewVar, NewTTBp, i);
+			if (NewCost >= labels[i][0] && NewMean >= labels[i][1]
+					&& NewTTBp >= labels[i][2]) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	// Dominance pruning checking 2
-		public boolean CheckLabels2(int NewCost, int NewMean, int NewVar,
-				double NewTTBp) {
-			for (int i = 0; i < DataHandler.numLabels; i++) {
-				
-				if (NewCost <= labels[i][0] && NewMean <= labels[i][1]
-						&& NewTTBp > labels[i][2]) {
-					// TODO:
-					double VarInter =0;
-					if(getMinSP(2)>=VarInter){
-						//Label Update
-						changeLabels(NewCost, NewMean, NewVar, NewTTBp, i);
-						return true;
-					}
-				}
+	public boolean CheckLabels2(int PCost, int PMean, int PVar, double PTTB, double Alfa) {
+		// TODO : Revisar ubicación
+		for (int i = 0; i < DataHandler.numLabels; i++) {
+			double za =NormalDistQuick.inverseF01(Alfa);
+			double LMean = labels[i][1];
+			double LVar = labels[i][2];
+			double VarInter = Math.pow((LMean - PMean) / za ,4) - 2
+					* Math.pow((LMean - PMean) / za , 2) * (PVar + LVar)
+					+ Math.pow(PVar + LVar , 2) - 4 * (PVar * LVar)
+					/ (4 * Math.pow((LMean - PMean) / za , 2));
+					
+			if (PCost >= labels[i][0] && PMean >= labels[i][1]
+					&& PTTB <= labels[i][2] && getMinSP(2) >= VarInter) {
+				return true;
 			}
-			return false;
 		}
+		return false;
+	}
+
 	private void changeLabels(int NewCost, int NewMean, int NewVar,
-			double NewTTBl,int label) {
-				labels[label][0]=NewCost;
-				labels[label][1]=NewMean;
-				labels[label][2]=NewVar;
-				labels[label][3]=NewTTBl;
+			double NewTTBl) {
+		/**
+		 * labels[label][0] = NewCost; labels[label][1] = NewMean;
+		 * labels[label][2] = NewVar; labels[label][3] = NewTTBl;
+		 */
 	}
 
 	public int getCompareCriteria() {
