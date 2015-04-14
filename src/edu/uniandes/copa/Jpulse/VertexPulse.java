@@ -128,6 +128,7 @@ public class VertexPulse {
 		// Label update
 		double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar), Alfa);
 		changeLabels(PCost, PMean, PVar, PTTBl);
+		
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
