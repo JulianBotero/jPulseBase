@@ -128,7 +128,7 @@ public class VertexPulse {
 		// Label update
 		double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar), Alfa);
 		changeLabels(PCost, PMean, PVar, PTTBl);
-		
+
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
@@ -158,7 +158,7 @@ public class VertexPulse {
 								Math.sqrt(NewVar
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 												.get(i)][1]].getMinSP(2)), Alfa);
-				
+
 				System.out.println("Arco: "
 						+ magicIndex.get(i)
 						+ ", CostAcum: "
@@ -183,7 +183,8 @@ public class VertexPulse {
 				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 								.get(i)][1]].getMinSP(0)) < PulseGraph.PrimalBound
-						&& !CheckLabels(NewCost, NewMean, NewVar, NewTTBp, i,Alfa)) {
+						&& !CheckLabels(NewCost, NewMean, NewVar, NewTTBp, i,
+								Alfa)) {
 					// If not pruned the pulse travels to the next head node
 					PulseGraph.vertexes[DataHandler.Arcs[magicIndex.get(i)][1]]
 							.pulse(NewCost, NewMean, NewVar, Alfa, path);
@@ -248,7 +249,7 @@ public class VertexPulse {
 			double NewTTBp) {
 		for (int i = 0; i < DataHandler.numLabels; i++) {
 			if (NewCost >= labels[i][0] && NewMean >= labels[i][1]
-					&& NewTTBp >= labels[i][2]) {
+					&& NewTTBp >= labels[i][3]) {
 				return true;
 			}
 		}
@@ -256,31 +257,69 @@ public class VertexPulse {
 	}
 
 	// Dominance pruning checking 2
-	public boolean CheckLabels2(int PCost, int PMean, int PVar, double PTTB, double Alfa) {
+	public boolean CheckLabels2(int PCost, int PMean, int PVar, double PTTB,
+			double Alfa) {
 		// TODO : Revisar ubicación
 		for (int i = 0; i < DataHandler.numLabels; i++) {
-			double za =NormalDistQuick.inverseF01(Alfa);
+			double za = NormalDistQuick.inverseF01(Alfa);
 			double LMean = labels[i][1];
 			double LVar = labels[i][2];
-			double VarInter = Math.pow((LMean - PMean) / za ,4) - 2
-					* Math.pow((LMean - PMean) / za , 2) * (PVar + LVar)
-					+ Math.pow(PVar + LVar , 2) - 4 * (PVar * LVar)
-					/ (4 * Math.pow((LMean - PMean) / za , 2));
-					
+			double VarInter = Math.pow((LMean - PMean) / za, 4) - 2
+					* Math.pow((LMean - PMean) / za, 2) * (PVar + LVar)
+					+ Math.pow(PVar + LVar, 2) - 4 * (PVar * LVar)
+					/ (4 * Math.pow((LMean - PMean) / za, 2));
+
 			if (PCost >= labels[i][0] && PMean >= labels[i][1]
-					&& PTTB <= labels[i][2] && getMinSP(2) >= VarInter) {
+					&& PTTB <= labels[i][3] && getMinSP(2) >= VarInter) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void changeLabels(int NewCost, int NewMean, int NewVar,
+	private void changeLabels(double NewCost, double NewMean, double NewVar,
 			double NewTTBl) {
-		/**
-		 * labels[label][0] = NewCost; labels[label][1] = NewMean;
-		 * labels[label][2] = NewVar; labels[label][3] = NewTTBl;
-		 */
+		if (NewCost <= labels[0][0]) {
+			double LCost = labels[0][0];
+			double LMean = labels[0][1];
+			double LVar = labels[0][2];
+			double LTTB = labels[0][3];
+			labels[0][0] = NewCost;
+			labels[0][1] = NewMean;
+			labels[0][2] = NewVar;
+			labels[0][3] = NewTTBl;
+			if (LCost != infinity && LMean != infinity && LVar != infinity
+					&& LTTB != infinity) {
+				changeLabels(LCost, LMean, LVar, LTTB);
+			}
+
+		} else if (NewMean <= labels[1][1]) {
+			double LCost = labels[1][0];
+			double LMean = labels[1][1];
+			double LVar = labels[1][2];
+			double LTTB = labels[1][3];
+			labels[1][0] = NewCost;
+			labels[1][1] = NewMean;
+			labels[1][2] = NewVar;
+			labels[1][3] = NewTTBl;
+			if (LCost != infinity && LMean != infinity && LVar != infinity
+					&& LTTB != infinity) {
+				changeLabels(LCost, LMean, LVar, LTTB);
+			}
+		} else if (NewVar <= labels[2][2]) {
+			double LCost = labels[2][0];
+			double LMean = labels[2][1];
+			double LVar = labels[2][2];
+			double LTTB = labels[2][3];
+			labels[2][0] = NewCost;
+			labels[2][1] = NewMean;
+			labels[2][2] = NewVar;
+			labels[2][3] = NewTTBl;
+			if (LCost != infinity && LMean != infinity && LVar != infinity
+					&& LTTB != infinity) {
+				changeLabels(LCost, LMean, LVar, LTTB);
+			}
+		}
 	}
 
 	public int getCompareCriteria() {

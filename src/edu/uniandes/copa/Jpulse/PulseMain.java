@@ -86,7 +86,7 @@ public class PulseMain {
 		// Create an empty path
 		ArrayList<Integer> Path = new ArrayList<Integer>();
 		// Pulse the origin node
-		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0,Instance.Alfa, Path);
+		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 1,Instance.Alfa, Path);
 		// Report the results
 		System.out.println("");
 		System.out.println("-------------------------------------------------------------");
