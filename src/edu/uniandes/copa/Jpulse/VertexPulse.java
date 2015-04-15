@@ -133,8 +133,9 @@ public class VertexPulse {
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
 			path.add(id);
-			System.out.println("path: " + path);
+			/**System.out.println("path: " + path);
 			System.out.println("");
+			*/
 			// Update the visit indicator
 			PulseGraph.Visited[id] = 1;
 			// Pulse all the head nodes for the outgoing arcs
@@ -158,7 +159,7 @@ public class VertexPulse {
 								Math.sqrt(NewVar
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 												.get(i)][1]].getMinSP(2)), Alfa);
-
+/**
 				System.out.println("Arco: "
 						+ magicIndex.get(i)
 						+ ", CostAcum: "
@@ -179,6 +180,7 @@ public class VertexPulse {
 						+ ", CotaIV: "
 						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 								.get(i)][1]].getMinSP(2));
+								*/
 				// Pruning strategies: infeasibility, bounds and dominance
 				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
@@ -292,7 +294,6 @@ public class VertexPulse {
 					&& LTTB != infinity) {
 				changeLabels(LCost, LMean, LVar, LTTB);
 			}
-
 		} else if (NewMean <= labels[1][1]) {
 			double LCost = labels[1][0];
 			double LMean = labels[1][1];
