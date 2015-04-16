@@ -15,11 +15,6 @@
 package edu.uniandes.copa.Jpulse;
 
 public class EdgePulse {
-	/**
-	private int eDist;
-	private int eTime;
-	private int eStDev;
-	*/
 	
 	private EdgePulse nextE;
 	private int id;
@@ -34,17 +29,6 @@ public class EdgePulse {
 		this.id = nid;
 		this.atributes = atri;
 	}
-	/**
-	public EdgePulse(int d , int t, int sd,  VertexPulse nT, VertexPulse nH, int nid) {
-		// TODO Auto-generated constructor stub
-		eDist = d;
-		eTime = t;
-		eStDev= sd;
-		this.source = nT;
-		this.target = nH;
-		this.id = nid;
-	}
-	*/
 	
 	public void addNextCommonTailEdge(EdgePulse e){
 		if(nextE!= null){
@@ -66,17 +50,7 @@ public class EdgePulse {
 	public int getWeight(int obj){
 		return atributes[obj];
 	}
-	/**
-	public int getWeightDist(){
-		return eDist;
-	}
-	public int getWeightTime(){
-		return eTime;
-	}
-	public int getWeightStDev(){
-		return eStDev;
-	}
-	*/
+
 	public VertexPulse getSource(){
 		return source;
 	}
@@ -110,10 +84,4 @@ public class EdgePulse {
 		}
 		return suma;
 	}
-	/**
-	public int getCompareCriteria(){
-		return target.getMinDist() + target.getMinTime();
-	}
-	*/
-	
 }

@@ -27,17 +27,15 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	static VertexPulse[] vertexes;
 	// Number of nodes
 	private int numNodes;
-	/**
-	 * // SP stuff private int Cd; private int Ct; private int Csd;
-	 */
 	// Time constraint
 	static double TimeC;
 	// Primal bound
 	static int PrimalBound;
 	// The best solution found is globally stored here
 	static ArrayList<Integer> Path;
-	// The time for the best solution found (the distance is stored in the primal bound)
-	static int TimeStar;
+	// The time for the best solution found (the distance is stored in the
+	// primal bound)
+	static double TimeStar;
 	// Binary indicator to know if visiting a node creates a cycle
 	static int[] Visited = new int[DataHandler.NumNodes];
 
@@ -48,9 +46,7 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
 			C[i] = 0;
 		}
-		/**
-		 * Cd = 0; Ct = 0; Csd = 0;
-		 */
+
 		vertexes = new VertexPulse[numNodes];
 		Path = new ArrayList<Integer>();
 
@@ -70,10 +66,11 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 		return vertexes[id];
 	}
 
-	public EdgePulse addWeightedEdge(VertexPulse sourceVertex, VertexPulse targetVertex,  int[] atris , int id) {
+	public EdgePulse addWeightedEdge(VertexPulse sourceVertex,
+			VertexPulse targetVertex, int[] atris, int id) {
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
-			if(atris[i]>C[i]){
-				C[i]=atris[i];
+			if (atris[i] > C[i]) {
+				C[i] = atris[i];
 			}
 		}
 
@@ -81,16 +78,6 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 				targetVertex, sourceVertex, id, atris));
 		vertexes[sourceVertex.getID()].magicIndex.add(id);
 		return null;
-		/**
-		 * public EdgePulse addWeightedEdge(VertexPulse sourceVertex,
-		 * VertexPulse targetVertex, int d, int t, int sd, int id) {
-		 * 
-		 * if(d>Cd){ Cd=d; } if(t>Ct){ Ct=t; } if(sd>Csd){ Csd=sd; }
-		 * vertexes[targetVertex.getID()].addReversedEdge(new EdgePulse(d, t,
-		 * sd, targetVertex , sourceVertex, id));
-		 * vertexes[sourceVertex.getID()].magicIndex.add(id); return null;
-		 */
-
 	}
 
 	@Override
@@ -225,14 +212,6 @@ public class PulseGraph implements Graph<VertexPulse, EdgePulse> {
 	public int getC(int obj) {
 		return C[obj];
 	}
-
-	/**
-	 * public int getCd() { return C[0]; }
-	 * 
-	 * public int getCt() { return C[1]; }
-	 * 
-	 * public int getCsd() { return C[2]; }
-	 */
 
 	public void resetNetwork() {
 		for (int i = 0; i < numNodes; i++) {

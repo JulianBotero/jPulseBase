@@ -25,16 +25,6 @@ public class FinalVertexPulse extends VertexPulse {
 	
 	// SP stuff
 	private EdgePulse reverseEdges;
-	/**
-	private VertexPulse bLeft;
-	private VertexPulse bRigth;
-	
-	// Bounds
-	int minDist;
-	int maxTime;
-	int minTime;
-	int maxDist;
-	*/
 	
 	/**
 	 * This matrix contains the sp bounds for each node M_ii correspond to the
@@ -45,12 +35,6 @@ public class FinalVertexPulse extends VertexPulse {
 	public int[][] spMatrix;
 	private PulseGraph pg;
 	private boolean [] inserted;
-	
-	/**
-	int c=0;
-	int d=0;
-	int sd=0;
-	*/
 	
 	public FinalVertexPulse(int iD, PulseGraph npg) {
 		super(iD);
@@ -97,18 +81,15 @@ public class FinalVertexPulse extends VertexPulse {
 		path.add(id);
 		double TTB = NormalDistQuick.inverseF(PMean,Math.sqrt(PVar), Alfa);
 		// If the path is feasible and updates the primal bound the information on the best solution found is updated
-		if(PCost<=PulseGraph.PrimalBound && TTB<=PulseGraph.TimeC){
+		if(PCost<PulseGraph.PrimalBound && TTB<=PulseGraph.TimeC){
 			
 			// Update the best solution known
 			PulseGraph.Path.clear();
 			PulseGraph.Path.addAll(path);
-			PulseGraph.TimeC=TTB;
+			PulseGraph.TimeStar=TTB;
 			PulseGraph.PrimalBound=PCost;
-			
 		}
 		// Remove the node id to backtrack
 		path.remove((path.size()-1));
 	}
-
-	
 }

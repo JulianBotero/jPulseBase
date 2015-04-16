@@ -1,10 +1,10 @@
-DataFile:Test-Road-NormalDistr.txt
-Number of Arcs:9
-Number of Nodes:6
+DataFile:scsp3.txt
+Number of Arcs:2080
+Number of Nodes:200
 Start Node:1
-End Node:6
+End Node:150
 Attributes:3
-Time Constraint:15
+Time Constraint:15000
 Alfa:0.9
 
 // This is the Test network with p=0.1

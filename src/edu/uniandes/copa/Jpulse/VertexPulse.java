@@ -94,15 +94,21 @@ public class VertexPulse {
 		return spMatrix[c][c];
 	}
 
-	public int getMaxDistSP() {
-		int maxDist = 0;
-
+	public int getMaxCostSP() {
+		int maxCost = infinity;
 		for (int i = 0; i < DataHandler.num_attributes; i++) {
-			if (PulseGraph.vertexes[0].spMatrix[i][2] > maxDist) {
-				maxDist = PulseGraph.vertexes[0].spMatrix[i][2];
+			// TODO: Alfa
+			double TTB = NormalDistQuick.inverseF(
+					PulseGraph.vertexes[0].spMatrix[i][1],
+					PulseGraph.vertexes[0].spMatrix[i][2], 0.9);
+			System.out.println(i+" TTB:"+TTB+" COST:"+PulseGraph.vertexes[0].spMatrix[i][0]);
+			
+			if (TTB < PulseGraph.TimeC && PulseGraph.vertexes[0].spMatrix[i][0] < maxCost) {
+				maxCost = PulseGraph.vertexes[0].spMatrix[i][0];
 			}
 		}
-		return maxDist;
+		// TODO: return
+		return maxCost+1;
 	}
 
 	public void reset() {
@@ -133,9 +139,9 @@ public class VertexPulse {
 		if (PulseGraph.Visited[id] == 0) {
 			// Add the node to the path
 			path.add(id);
-			/**System.out.println("path: " + path);
+			System.out.println("path: " + path);
 			System.out.println("");
-			*/
+
 			// Update the visit indicator
 			PulseGraph.Visited[id] = 1;
 			// Pulse all the head nodes for the outgoing arcs
@@ -159,28 +165,17 @@ public class VertexPulse {
 								Math.sqrt(NewVar
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 												.get(i)][1]].getMinSP(2)), Alfa);
-/**
-				System.out.println("Arco: "
-						+ magicIndex.get(i)
-						+ ", CostAcum: "
-						+ NewCost
-						+ ", PrimalBoundC: "
-						+ PulseGraph.PrimalBound
-						+ ", MeanAcum: "
-						+ NewMean
-						+ ", VarAcum: "
-						+ NewVar
-						+ ", TTB:"
-						+ NewTTBi
-						+ ", CotaTiempo: "
-						+ PulseGraph.TimeC
-						+ ", CotaIT: "
-						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-								.get(i)][1]].getMinSP(1)
-						+ ", CotaIV: "
-						+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-								.get(i)][1]].getMinSP(2));
-								*/
+				/**
+				 * System.out.println("Arco: " + magicIndex.get(i) +
+				 * ", CostAcum: " + NewCost + ", PrimalBoundC: " +
+				 * PulseGraph.PrimalBound + ", MeanAcum: " + NewMean +
+				 * ", VarAcum: " + NewVar + ", TTB:" + NewTTBi +
+				 * ", CotaTiempo: " + PulseGraph.TimeC + ", CotaIT: " +
+				 * PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+				 * .get(i)][1]].getMinSP(1) + ", CotaIV: " +
+				 * PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+				 * .get(i)][1]].getMinSP(2));
+				 */
 				// Pruning strategies: infeasibility, bounds and dominance
 				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
@@ -252,9 +247,11 @@ public class VertexPulse {
 		for (int i = 0; i < DataHandler.numLabels; i++) {
 			if (NewCost >= labels[i][0] && NewMean >= labels[i][1]
 					&& NewTTBp >= labels[i][3]) {
+				System.out.println("Dominance1");
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -273,6 +270,7 @@ public class VertexPulse {
 
 			if (PCost >= labels[i][0] && PMean >= labels[i][1]
 					&& PTTB <= labels[i][3] && getMinSP(2) >= VarInter) {
+				System.out.println("Dominance2");
 				return true;
 			}
 		}
@@ -330,8 +328,4 @@ public class VertexPulse {
 		}
 		return suma;
 	}
-	/**
-	 * public int getCompareCriteria(){ return getMinDist(); }
-	 */
-
 }
