@@ -38,22 +38,10 @@ public class PulseMain {
 
 		// Set time Constraint
 		network.SetConstraint(Instance.TimeC);
-		/**
-		 * // Create two threads and run parallel SP for the initialization
-		 * Thread tTime = new Thread(); Thread tDist = new Thread();
-		 */
+		
 		// Begin the time count
 		double Atime = System.nanoTime();
-		// Reverse the network and run SP for distance and time
-		/**
-		 * DukqstraDist spDist = new DukqstraDist(network, Instance.LastNode-1);
-		 * DukqstraTime spTime = new DukqstraTime(network, Instance.LastNode-1);
-		 * tDist = new Thread(new ShortestPathTask(1, spDist, null)); tTime =
-		 * new Thread(new ShortestPathTask(0, null, spTime)); tDist.start();
-		 * tTime.start(); tDist.join(); tTime.join();
-		 */
-
-		// We need one SP algorithm for each weight/objective
+		// SP algorithm for each weight/objective
 		DIKBD[] spAlgo = new DIKBD[Instance.numObjs];
 		Thread[] tSp = new Thread[Instance.numObjs];
 		for (int i = 0; i < spAlgo.length; i++) {
@@ -68,7 +56,7 @@ public class PulseMain {
 		for (int i = 0; i < spAlgo.length; i++) {
 			tSp[i].join();
 		}
-		
+
 		// MD is the distance for the best time path
 		/**
 		 * int MD=network.getVertexByID(Instance.Source-1).getMaxDistSP(); int
@@ -76,7 +64,7 @@ public class PulseMain {
 		 */
 		// TODO: Set the first primal bound
 		int MD = network.getVertexByID(Instance.Source - 1).getMaxCostSP();
-		System.out.println("Costo Primal: "+MD);
+		System.out.println("Costo Primal: " + MD);
 		network.setPrimalBound(MD);
 
 		// /////////////////////////////////// PULSE
@@ -84,7 +72,7 @@ public class PulseMain {
 		// Create an empty path
 		ArrayList<Integer> Path = new ArrayList<Integer>();
 		// Pulse the origin node
-		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 1,
+		network.getVertexByID(Instance.Source - 1).pulse(0, 0, 0,
 				Instance.Alfa, Path);
 		// Report the results
 		System.out.println("");

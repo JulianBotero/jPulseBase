@@ -2,9 +2,9 @@ DataFile:scsp3.txt
 Number of Arcs:2080
 Number of Nodes:200
 Start Node:1
-End Node:150
+End Node:95
 Attributes:3
-Time Constraint:15000
+Time Constraint:600
 Alfa:0.9
 
 // This is the Test network with p=0.1

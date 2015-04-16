@@ -101,14 +101,16 @@ public class VertexPulse {
 			double TTB = NormalDistQuick.inverseF(
 					PulseGraph.vertexes[0].spMatrix[i][1],
 					PulseGraph.vertexes[0].spMatrix[i][2], 0.9);
-			System.out.println(i+" TTB:"+TTB+" COST:"+PulseGraph.vertexes[0].spMatrix[i][0]);
-			
-			if (TTB < PulseGraph.TimeC && PulseGraph.vertexes[0].spMatrix[i][0] < maxCost) {
+			System.out.println(i + " TTB:" + TTB + " COST:"
+					+ PulseGraph.vertexes[0].spMatrix[i][0]);
+
+			if (TTB < PulseGraph.TimeC
+					&& PulseGraph.vertexes[0].spMatrix[i][0] < maxCost) {
 				maxCost = PulseGraph.vertexes[0].spMatrix[i][0];
 			}
 		}
 		// TODO: return
-		return maxCost+1;
+		return maxCost + 1;
 	}
 
 	public void reset() {
@@ -124,6 +126,7 @@ public class VertexPulse {
 	// This is the pulse procedure
 	public void pulse(int PCost, int PMean, int PVar, double Alfa,
 			ArrayList<Integer> path) {
+
 		// if a node is visited for first time, sort the arcs
 		if (this.firstTime) {
 			this.firstTime = false;
@@ -132,8 +135,12 @@ public class VertexPulse {
 		}
 
 		// Label update
-		double PTTBl = NormalDistQuick.inverseF(PMean, Math.sqrt(PVar), Alfa);
-		changeLabels(PCost, PMean, PVar, PTTBl);
+		if (PVar == 0) {
+			changeLabels(PCost, PMean, PVar, PMean);
+		} else {
+			double PTTBl = NormalDistQuick.inverseF(PMean, PVar, Alfa);
+			changeLabels(PCost, PMean, PVar, PTTBl);
+		}
 
 		// Check for cycles
 		if (PulseGraph.Visited[id] == 0) {
@@ -155,16 +162,15 @@ public class VertexPulse {
 				NewCost = (PCost + DataHandler.atributes[magicIndex.get(i)][0]);
 				NewMean = (PMean + DataHandler.atributes[magicIndex.get(i)][1]);
 				NewVar = PVar + DataHandler.atributes[magicIndex.get(i)][2];
-				NewTTBp = NormalDistQuick.inverseF(NewMean, Math.sqrt(NewVar),
-						Alfa);
+				NewTTBp = NormalDistQuick.inverseF(NewMean, NewVar, Alfa);
 				NewTTBi = NormalDistQuick
 						.inverseF(
 								NewMean
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 												.get(i)][1]].getMinSP(1),
-								Math.sqrt(NewVar
+								NewVar
 										+ PulseGraph.vertexes[DataHandler.Arcs[magicIndex
-												.get(i)][1]].getMinSP(2)), Alfa);
+												.get(i)][1]].getMinSP(2), Alfa);
 				/**
 				 * System.out.println("Arco: " + magicIndex.get(i) +
 				 * ", CostAcum: " + NewCost + ", PrimalBoundC: " +
@@ -177,6 +183,19 @@ public class VertexPulse {
 				 * .get(i)][1]].getMinSP(2));
 				 */
 				// Pruning strategies: infeasibility, bounds and dominance
+				System.out
+						.println("MeanAcum: "
+								+ NewMean
+								+ ", VarAcum: "
+								+ NewVar
+								+ "; infeasibility-> TTBp: "
+								+ NewTTBp
+								+ " TimeC: "
+								+ PulseGraph.TimeC
+								+ "; Bounds-> Costi: "
+								+ (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
+										.get(i)][1]].getMinSP(0)) + " CostC: "
+								+ PulseGraph.PrimalBound);
 				if ((NewTTBi <= PulseGraph.TimeC)
 						&& (NewCost + PulseGraph.vertexes[DataHandler.Arcs[magicIndex
 								.get(i)][1]].getMinSP(0)) < PulseGraph.PrimalBound
@@ -251,7 +270,6 @@ public class VertexPulse {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -267,7 +285,12 @@ public class VertexPulse {
 					* Math.pow((LMean - PMean) / za, 2) * (PVar + LVar)
 					+ Math.pow(PVar + LVar, 2) - 4 * (PVar * LVar)
 					/ (4 * Math.pow((LMean - PMean) / za, 2));
-
+			/**
+			 * System.out.println("Label: " + i + " -> PCost: " + PCost +
+			 * " LCost: " + labels[i][0] + " Pmean: " + PMean + " Lmean: " +
+			 * labels[i][1] + " PTTB: " + PTTB + " LPTTB: " + labels[i][3] +
+			 * " Var(i): " + getMinSP(2) + " VarInter: " + VarInter);
+			 */
 			if (PCost >= labels[i][0] && PMean >= labels[i][1]
 					&& PTTB <= labels[i][3] && getMinSP(2) >= VarInter) {
 				System.out.println("Dominance2");
